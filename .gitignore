@@ -13,3 +13,5 @@ xcuserdata/
 build/
 DerivedData/
 
+## Delete .DS_Store
+*.DS_Store

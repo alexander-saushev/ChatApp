@@ -8,6 +8,7 @@
 
 import UIKit
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
@@ -27,36 +28,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func stateLogger(currentState: UIApplication.State, methodName: String) {
-        
-        var currentStateString = ""
-        
-        switch currentState {
-        case .active:
-            currentStateString = "Active"
-        case .background:
-            currentStateString = "Background"
-        case .inactive:
-            currentStateString = "Inactive"
-        @unknown default:
-            currentStateString = ""
-        }
-        
-        #if DEBUG
-        print("Called method: \(methodName)")
-        
-        if prevState != currentState {
-            print("Application moved from \(prevStateString) to \(currentStateString)")
-            self.prevState = currentState
-        }
-        else {
-            print("Application state is \(currentStateString)")
-        }
-        
-        print("")
-        #endif
-        
+
+//        var currentStateString = ""
+//
+//        switch currentState {
+//        case .active:
+//            currentStateString = "Active"
+//        case .background:
+//            currentStateString = "Background"
+//        case .inactive:
+//            currentStateString = "Inactive"
+//        @unknown default:
+//            currentStateString = ""
+//        }
+//
+//        #if DEBUG
+//        print("Called method: \(methodName)")
+//
+//        if prevState != currentState {
+//            //print("Application moved from \(prevStateString) to \(currentStateString)")
+//            self.prevState = currentState
+//        }
+//        else {
+//            print("Application state is \(currentStateString)")
+//        }
+//
+//        print("")
+//        #endif
+
     }
-    
+
+    // Приложение не шлет уведомление о переходе в состояние Inactive, поэтому для логирования
+    // этого состояния я сделал специальный метод. По умолчанию используется автоматический,
+    // «более умный» вариант
     func stateLoggerWithInactiveStates(_ method: String) {
         switch method {
         case "application(_:willFinishLaunchingWithOptions:)":
@@ -116,7 +120,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
     }
-    
 }
 
 
