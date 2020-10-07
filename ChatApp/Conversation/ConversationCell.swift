@@ -24,11 +24,13 @@ class ConversationCell: UITableViewCell, ConfigurableView {
         messageLabel?.text = model.text
         
         if model.isIncoming {
-            bubbleView?.backgroundColor = UIColor(red: 0.87, green: 0.87, blue: 0.91, alpha: 1.00)
+            bubbleView?.backgroundColor = Theme.current.incommingMessageBubbleColor
+            messageLabel?.textColor = Theme.current.incommingMessageTextColor
             trailingConstraint?.isActive = false
             leadingConstraint?.isActive = true
         } else {
-            bubbleView?.backgroundColor = UIColor(red: 0.86, green: 0.97, blue: 0.77, alpha: 1.00)
+            bubbleView?.backgroundColor = Theme.current.outgoingMessageBubbleColor
+            messageLabel?.textColor = Theme.current.outgoingMessageTextColor
             trailingConstraint?.isActive = true
             leadingConstraint?.isActive = false
         }

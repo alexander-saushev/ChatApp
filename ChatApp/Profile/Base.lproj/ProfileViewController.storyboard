@@ -124,6 +124,8 @@ Moscow, Russia</string>
                     <connections>
                         <outlet property="descriptionLabel" destination="ets-vR-muF" id="Zfb-Pe-6t2"/>
                         <outlet property="editButton" destination="ZwJ-eN-bfk" id="0Uo-7Y-RzJ"/>
+                        <outlet property="headerLabel" destination="khW-4r-M8Q" id="WWY-Gj-DdH"/>
+                        <outlet property="headerView" destination="PTq-oM-MHD" id="aRL-Wl-XcK"/>
                         <outlet property="initialsLabel" destination="aMs-Tq-tGE" id="mfJ-kr-kTh"/>
                         <outlet property="nameLabel" destination="Rlj-iY-csN" id="hSq-pl-IAa"/>
                         <outlet property="photoImageView" destination="Q4C-pT-oB6" id="mUe-pw-iuN"/>

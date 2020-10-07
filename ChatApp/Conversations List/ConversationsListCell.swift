@@ -19,8 +19,9 @@ class ConversationsListCell: UITableViewCell {
     func configure(with model: ConversationCellModel) {
         self.selectionStyle = .none
         
+        setTheme()
+        
         photoView.layer.cornerRadius = photoView.bounds.width / 2
-        dateLabel.textColor = UIColor(red: 0.24, green: 0.24, blue: 0.26, alpha: 0.6)
         nameLabel.text = model.name
         
         if model.message == "" {
@@ -41,9 +42,9 @@ class ConversationsListCell: UITableViewCell {
         }
         
         if model.isOnline {
-            backgroundColor = UIColor(red: 1.00, green: 0.95, blue: 0.74, alpha: 1.00)
+            backgroundColor = UIColor(red: 1.00, green: 0.95, blue: 0.74, alpha: 1.00).withAlphaComponent(0.5)
         } else {
-            backgroundColor = UIColor.clear
+            backgroundColor = Theme.current.backgroundColor
         }
     }
     
@@ -60,5 +61,11 @@ class ConversationsListCell: UITableViewCell {
             let localDate = dateFormatter.string(from: date)
             return localDate
         }
+    }
+    
+    private func setTheme(){
+        nameLabel?.textColor = Theme.current.textColor
+        messageLabel?.textColor = Theme.current.conversationsListTextColor
+        dateLabel?.textColor = Theme.current.conversationsListTextColor
     }
 }

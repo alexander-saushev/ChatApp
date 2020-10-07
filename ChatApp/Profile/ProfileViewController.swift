@@ -16,6 +16,9 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var saveButton: UIButton!
     @IBOutlet weak var initialsLabel: UILabel!
+    @IBOutlet weak var headerLabel: UILabel!
+    @IBOutlet weak var headerView: UIView!
+    
     @IBAction func closeButtonAction(_ sender: Any) {
         self.dismiss(animated: true, completion: nil)
     }
@@ -37,6 +40,8 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setTheme()
         print("ViewDidLoad:", saveButton.frame)
         
         saveButton.isUserInteractionEnabled = false // чтобы приложение не крашилось, пока не назначен action
@@ -71,7 +76,12 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
             }
         }))
         
-        alert.addAction(UIAlertAction(title: "Отменить", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Отменить", style: .default, handler: nil))
+        
+        let contentView = alert.view.subviews.first?.subviews.first?.subviews.first
+        contentView?.backgroundColor = Theme.current.alertBackgroundColor
+        
+        
         
         present(alert, animated: true, completion: nil)
     }
@@ -90,5 +100,14 @@ class ProfileViewController: UIViewController, UIImagePickerControllerDelegate, 
         /*
          frame отличаются, потому что в методе viewDidload еще не установлены финальные размеры и положения subviews
          */
+    }
+    
+    private func setTheme() {
+        self.view.backgroundColor = Theme.current.backgroundColor
+        nameLabel?.textColor = Theme.current.textColor
+        descriptionLabel?.textColor = Theme.current.textColor
+        saveButton?.backgroundColor = Theme.current.saveButtonColor
+        headerLabel?.textColor = Theme.current.textColor
+        headerView?.backgroundColor = Theme.current.profileHeaderColor
     }
 }

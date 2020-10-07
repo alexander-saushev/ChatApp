@@ -7,9 +7,14 @@
 //
 
 import Foundation
+import UIKit
 
 protocol ConfigurableView {
     associatedtype ConfigurationModel
     
     func configure(with model: ConfigurationModel)
+}
+
+protocol ThemesPickerDelegate: class {
+    func setTheme(_ theme: ThemeModel)
 }

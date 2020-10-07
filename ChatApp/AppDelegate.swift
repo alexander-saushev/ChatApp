@@ -98,6 +98,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
+        
+        
+        let userDefaults = UserDefaults.standard
+        let theme = userDefaults.string(forKey: "Theme")
+
+        switch theme {
+        case "classic":
+            Theme.current = ClassicTheme()
+        case "day":
+            Theme.current = DayTheme()
+        case "night":
+            Theme.current = NightTheme()
+        default:
+            Theme.current = ClassicTheme()
+        }
+        
         return true
     }
     

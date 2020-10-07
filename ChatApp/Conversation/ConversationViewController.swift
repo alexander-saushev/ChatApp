@@ -17,11 +17,17 @@ class ConversationViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setTheme()
+        
         self.title = name
         
         chatTableView?.delegate = self
         chatTableView?.dataSource = self
         chatTableView?.register(UINib(nibName: String(describing: ConversationCell.self), bundle: nil), forCellReuseIdentifier: String(describing: ConversationCell.self))
+    }
+    
+    private func setTheme() {
+        self.view.backgroundColor = Theme.current.backgroundColor
     }
     
 }
