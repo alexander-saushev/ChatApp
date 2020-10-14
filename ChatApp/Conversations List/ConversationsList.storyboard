@@ -48,12 +48,12 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Tinkoff Chat" id="K9T-1f-X9i">
-                        <barButtonItem key="leftBarButtonItem" image="gear" catalog="system" id="yt0-sF-Fr7">
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="yt0-sF-Fr7">
                             <connections>
                                 <action selector="settingsButtonAction:" destination="ZFl-Bw-qb2" id="7Gd-LY-6G5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" style="plain" id="DHR-nj-Wdr">
+                        <barButtonItem key="rightBarButtonItem" id="DHR-nj-Wdr">
                             <view key="customView" contentMode="scaleToFill" id="Ap1-Ki-6tn">
                                 <rect key="frame" x="354" y="2" width="40" height="40"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -86,7 +86,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="gear" catalog="system" width="128" height="119"/>
+        <image name="settings" width="25" height="25"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

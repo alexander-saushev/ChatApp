@@ -1,0 +1,21 @@
+
+/* Class = "UIButton"; normalTitle = "Edit"; ObjectID = "1KH-Rt-IF5"; */
+"1KH-Rt-IF5.normalTitle" = "Edit";
+
+/* Class = "UIButton"; normalTitle = "Close"; ObjectID = "Pvx-uv-vQH"; */
+"Pvx-uv-vQH.normalTitle" = "Close";
+
+/* Class = "UIButton"; normalTitle = "Operation"; ObjectID = "T4j-el-QbT"; */
+"T4j-el-QbT.normalTitle" = "Operation";
+
+/* Class = "UIButton"; normalTitle = "Edit"; ObjectID = "ZwJ-eN-bfk"; */
+"ZwJ-eN-bfk.normalTitle" = "Edit";
+
+/* Class = "UILabel"; text = "MD"; ObjectID = "aMs-Tq-tGE"; */
+"aMs-Tq-tGE.text" = "MD";
+
+/* Class = "UILabel"; text = "My Profile"; ObjectID = "khW-4r-M8Q"; */
+"khW-4r-M8Q.text" = "My Profile";
+
+/* Class = "UIButton"; normalTitle = "GCD"; ObjectID = "mV1-Fo-k4h"; */
+"mV1-Fo-k4h.normalTitle" = "GCD";

@@ -18,3 +18,8 @@ protocol ConfigurableView {
 protocol ThemesPickerDelegate: class {
     func setTheme(_ theme: ThemeModel)
 }
+
+protocol GetAndSaveProfileProtocol {
+    func getProfile(completion: @escaping (UserProfile) -> ())
+    func saveProfile(profile: UserProfile, completion: @escaping(Error?) -> ())
+}

@@ -12,6 +12,9 @@
 		DF3A3152250F79A200DD7BBC /* ProfileViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF3A3150250F79A200DD7BBC /* ProfileViewController.storyboard */; };
 		DF3A3154250F79A500DD7BBC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DF3A3153250F79A500DD7BBC /* Assets.xcassets */; };
 		DF3A3157250F79A500DD7BBC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DF3A3155250F79A500DD7BBC /* LaunchScreen.storyboard */; };
+		DF87C98A2536E0C600E5B538 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C9892536E0C600E5B538 /* UserProfile.swift */; };
+		DF87C98D2536E11C00E5B538 /* GCDDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C98C2536E11C00E5B538 /* GCDDataManager.swift */; };
+		DF87C9902536E14600E5B538 /* OperationDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C98F2536E14600E5B538 /* OperationDataManager.swift */; };
 		DFA54423252DB61F00BFA8CF /* ThemesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA54422252DB61F00BFA8CF /* ThemesViewController.swift */; };
 		DFA54427252DB63A00BFA8CF /* ThemesViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DFA54426252DB63A00BFA8CF /* ThemesViewController.storyboard */; };
 		DFA5442C252DD1E800BFA8CF /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA5442B252DD1E800BFA8CF /* Theme.swift */; };
@@ -37,10 +40,12 @@
 		DF3A3147250F79A200DD7BBC /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF3A314A250F79A200DD7BBC /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DF3A314E250F79A200DD7BBC /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
-		DF3A3151250F79A200DD7BBC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ProfileViewController.storyboard; sourceTree = "<group>"; };
 		DF3A3153250F79A500DD7BBC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DF3A3156250F79A500DD7BBC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DF3A3158250F79A500DD7BBC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DF87C9892536E0C600E5B538 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		DF87C98C2536E11C00E5B538 /* GCDDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDDataManager.swift; sourceTree = "<group>"; };
+		DF87C98F2536E14600E5B538 /* OperationDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationDataManager.swift; sourceTree = "<group>"; };
 		DFA54422252DB61F00BFA8CF /* ThemesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemesViewController.swift; sourceTree = "<group>"; };
 		DFA54426252DB63A00BFA8CF /* ThemesViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ThemesViewController.storyboard; sourceTree = "<group>"; };
 		DFA5442B252DD1E800BFA8CF /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
@@ -56,6 +61,7 @@
 		DFAA8CB725291481006ACD8B /* ConversationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationViewController.swift; sourceTree = "<group>"; };
 		DFAA8CBA25291701006ACD8B /* ConversationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCell.swift; sourceTree = "<group>"; };
 		DFAA8CBB25291701006ACD8B /* ConversationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ConversationCell.xib; sourceTree = "<group>"; };
+		DFD636FF2537B0F1002D162A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/ProfileViewController.storyboard; sourceTree = "<group>"; };
 		DFD84E0F252A638500491B1C /* TemporaryData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TemporaryData.swift; sourceTree = "<group>"; };
 		DFD84E13252A63E400491B1C /* Protocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Protocols.swift; sourceTree = "<group>"; };
 		DFD84E1A252A672A00491B1C /* ConversationCellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConversationCellModel.swift; sourceTree = "<group>"; };
@@ -133,6 +139,9 @@
 			children = (
 				DF3A3150250F79A200DD7BBC /* ProfileViewController.storyboard */,
 				DF3A314E250F79A200DD7BBC /* ProfileViewController.swift */,
+				DF87C9892536E0C600E5B538 /* UserProfile.swift */,
+				DF87C98C2536E11C00E5B538 /* GCDDataManager.swift */,
+				DF87C98F2536E14600E5B538 /* OperationDataManager.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -243,6 +252,7 @@
 				DFA5443E252DD60300BFA8CF /* NightTheme.swift in Sources */,
 				DF3A314F250F79A200DD7BBC /* ProfileViewController.swift in Sources */,
 				DF3A314B250F79A200DD7BBC /* AppDelegate.swift in Sources */,
+				DF87C98D2536E11C00E5B538 /* GCDDataManager.swift in Sources */,
 				DFAA8CBC25291701006ACD8B /* ConversationCell.swift in Sources */,
 				DFA5442F252DD21000BFA8CF /* ThemeModel.swift in Sources */,
 				DFD84E14252A63E400491B1C /* Protocols.swift in Sources */,
@@ -250,9 +260,11 @@
 				DFA54432252DD22500BFA8CF /* ClassicTheme.swift in Sources */,
 				DFD84E1E252A675100491B1C /* MessageCellModel.swift in Sources */,
 				DFA54423252DB61F00BFA8CF /* ThemesViewController.swift in Sources */,
+				DF87C9902536E14600E5B538 /* OperationDataManager.swift in Sources */,
 				DFA5442C252DD1E800BFA8CF /* Theme.swift in Sources */,
 				DFD84E10252A638500491B1C /* TemporaryData.swift in Sources */,
 				DFD84E1B252A672A00491B1C /* ConversationCellModel.swift in Sources */,
+				DF87C98A2536E0C600E5B538 /* UserProfile.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +274,7 @@
 		DF3A3150250F79A200DD7BBC /* ProfileViewController.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
-				DF3A3151250F79A200DD7BBC /* Base */,
+				DFD636FF2537B0F1002D162A /* Base */,
 			);
 			name = ProfileViewController.storyboard;
 			sourceTree = "<group>";
@@ -330,6 +342,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -385,6 +398,7 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LOCALIZED_STRING_SWIFTUI_SUPPORT = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
