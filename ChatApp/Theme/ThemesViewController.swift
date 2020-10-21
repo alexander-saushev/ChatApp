@@ -21,7 +21,6 @@ class ThemesViewController: UIViewController {
     
     @IBOutlet var bubbleViews: [UIView]!
     
-    
     /*
      Retain cycle мог бы возникнуть, если бы ThemesViewController и ConversationsListViewController
      держали сильные ссылки друг на друга
@@ -57,7 +56,6 @@ class ThemesViewController: UIViewController {
         classicNameLabel.addGestureRecognizer(tapOnClassicThemeName)
         classicNameLabel.isUserInteractionEnabled = true
         
-        
         let tapOnDayThemeContainer = UITapGestureRecognizer(target: self, action: #selector(setDayTheme))
         dayContainerView.addGestureRecognizer(tapOnDayThemeContainer)
         let tapOnDayThemeName = UITapGestureRecognizer(target: self, action: #selector(setDayTheme))
@@ -73,7 +71,7 @@ class ThemesViewController: UIViewController {
         configureTheme()
     }
     
-    @objc private func setClassicTheme(){
+    @objc private func setClassicTheme() {
         // delegate?.setTheme(ClassicTheme())
         self.setTheme?(ClassicTheme())
         saveTheme(.classic)
@@ -83,7 +81,7 @@ class ThemesViewController: UIViewController {
         setupNight(border: 1, color: .gray)
     }
     
-    @objc private func setDayTheme(){
+    @objc private func setDayTheme() {
         // delegate?.setTheme(DayTheme())
         self.setTheme?(DayTheme())
         saveTheme(.day)
@@ -93,7 +91,7 @@ class ThemesViewController: UIViewController {
         setupNight(border: 1, color: .gray)
     }
     
-    @objc private func setNightTheme(){
+    @objc private func setNightTheme() {
         // delegate?.setTheme(NightTheme())
         self.setTheme?(NightTheme())
         saveTheme(.night)
@@ -103,23 +101,23 @@ class ThemesViewController: UIViewController {
         setupDay(border: 1, color: .gray)
     }
     
-    private func setupClassic(border: CGFloat, color: UIColor){
+    private func setupClassic(border: CGFloat, color: UIColor) {
         classicContainerView.layer.borderWidth = border
         classicContainerView.layer.borderColor = color.cgColor
     }
     
-    private func setupDay(border: CGFloat, color: UIColor){
+    private func setupDay(border: CGFloat, color: UIColor) {
         dayContainerView.layer.borderWidth = border
         dayContainerView.layer.borderColor = color.cgColor
     }
     
-    private func setupNight(border: CGFloat, color: UIColor){
+    private func setupNight(border: CGFloat, color: UIColor) {
         nightContainerView.layer.borderWidth = border
         nightContainerView.layer.borderColor = color.cgColor
         
     }
     
-    private func saveTheme(_ theme: CurrentTheme){
+    private func saveTheme(_ theme: CurrentTheme) {
         let userDefaults = UserDefaults.standard
         userDefaults.set(theme.rawValue, forKey: "Theme")
         
@@ -154,8 +152,7 @@ class ThemesViewController: UIViewController {
 }
 
 enum CurrentTheme: String {
-    case classic = "classic"
-    case day = "day"
-    case night = "night"
+    case classic
+    case day
+    case night
 }
-

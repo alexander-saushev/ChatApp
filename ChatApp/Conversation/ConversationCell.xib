@@ -11,19 +11,25 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="71" id="KGk-i7-Jjw" customClass="ConversationCell" customModule="ChatApp" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="KGk-i7-Jjw" customClass="ConversationCell" customModule="ChatApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                <rect key="frame" x="0.0" y="0.0" width="375" height="85"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3Ap-Zl-Tei">
-                        <rect key="frame" x="15" y="10" width="266" height="34"/>
+                        <rect key="frame" x="15" y="10" width="266" height="65"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fd9-m1-Qfv">
-                                <rect key="frame" x="8" y="7" width="250" height="20"/>
+                                <rect key="frame" x="8" y="25.666666666666661" width="250" height="32.333333333333343"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zGH-wb-jpA">
+                                <rect key="frame" x="8" y="6.9999999999999991" width="33" height="15.666666666666664"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -33,7 +39,10 @@
                             <constraint firstAttribute="bottom" secondItem="fd9-m1-Qfv" secondAttribute="bottom" constant="7" id="4JV-7u-PuV"/>
                             <constraint firstAttribute="trailing" secondItem="fd9-m1-Qfv" secondAttribute="trailing" constant="8" id="CRQ-KC-ha4"/>
                             <constraint firstItem="fd9-m1-Qfv" firstAttribute="leading" secondItem="3Ap-Zl-Tei" secondAttribute="leading" constant="8" id="LwX-iV-IAE"/>
-                            <constraint firstItem="fd9-m1-Qfv" firstAttribute="top" secondItem="3Ap-Zl-Tei" secondAttribute="top" constant="7" id="Qb6-Kb-GCd"/>
+                            <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="zGH-wb-jpA" secondAttribute="trailing" constant="7" id="Lz0-xA-x5g"/>
+                            <constraint firstItem="fd9-m1-Qfv" firstAttribute="top" secondItem="zGH-wb-jpA" secondAttribute="bottom" constant="3" id="PaC-yA-FkD"/>
+                            <constraint firstItem="zGH-wb-jpA" firstAttribute="leading" secondItem="fd9-m1-Qfv" secondAttribute="leading" id="XnX-uv-VJk"/>
+                            <constraint firstItem="zGH-wb-jpA" firstAttribute="top" secondItem="3Ap-Zl-Tei" secondAttribute="top" constant="7" id="kYj-P0-T2c"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -49,10 +58,11 @@
             <connections>
                 <outlet property="bubbleView" destination="3Ap-Zl-Tei" id="qhg-7S-zxk"/>
                 <outlet property="leadingConstraint" destination="ABH-7g-ClN" id="oWg-bo-riG"/>
-                <outlet property="messageLabel" destination="fd9-m1-Qfv" id="b2F-nz-4cU"/>
+                <outlet property="messageLabel" destination="fd9-m1-Qfv" id="4Ey-Dr-8ZO"/>
+                <outlet property="senderNameLabel" destination="zGH-wb-jpA" id="2FT-fe-zSc"/>
                 <outlet property="trailingConstraint" destination="QT3-H5-FHg" id="0Xn-1t-9yh"/>
             </connections>
-            <point key="canvasLocation" x="136.80000000000001" y="81.2807881773399"/>
+            <point key="canvasLocation" x="136.80000000000001" y="92.73399014778326"/>
         </tableViewCell>
     </objects>
     <resources>

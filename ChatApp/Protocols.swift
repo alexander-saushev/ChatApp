@@ -20,6 +20,6 @@ protocol ThemesPickerDelegate: class {
 }
 
 protocol GetAndSaveProfileProtocol {
-    func getProfile(completion: @escaping (UserProfile) -> ())
-    func saveProfile(profile: UserProfile, completion: @escaping(Error?) -> ())
+    func getProfile(completion: @escaping (UserProfile) -> Void)
+    func saveProfile(profile: UserProfile, completion: @escaping(Error?) -> Void)
 }

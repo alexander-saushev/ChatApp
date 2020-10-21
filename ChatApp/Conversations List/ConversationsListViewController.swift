@@ -10,11 +10,18 @@ import UIKit
 
 class ConversationsListViewController: UIViewController {
     
+    lazy var channelsService = ChannelsService()
+    
+    var channels: [Channel] = []
+    
+    private let cellId = String(describing: ConversationsListCell.self)
+    
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var profileView: UIView!
+    @IBOutlet weak var addChannelBarButtonItem: UIBarButtonItem!
     
     @IBAction func settingsButtonAction(_ sender: Any) {
-        let themeStoryboard: UIStoryboard = UIStoryboard(name: "ThemesViewController", bundle:nil)
+        let themeStoryboard: UIStoryboard = UIStoryboard(name: "ThemesViewController", bundle: nil)
         let resultViewController = themeStoryboard.instantiateViewController(withIdentifier: "ThemesViewController") as? ThemesViewController
         guard let destinationController = resultViewController else { return }
         
@@ -27,27 +34,10 @@ class ConversationsListViewController: UIViewController {
         self.navigationController?.pushViewController(destinationController, animated: true)
     }
     
-    
-    var conversationsList: [[ConversationCellModel]] = []
-    
-    private func sortArrayByStatus(array: [ConversationCellModel]) -> [[ConversationCellModel]] {
-        var sortedByStatusArray: [[ConversationCellModel]] = [[],[]]
-        for (index, item) in array.enumerated(){
-            if item.isOnline{
-                sortedByStatusArray[0].append(array[index])
-            } else {
-                sortedByStatusArray[1].append(array[index])
-            }
-        }
-        return sortedByStatusArray
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         configureTheme(Theme.current)
-        
-        conversationsList = sortArrayByStatus(array: conversationsListExample)
         
         profileView.layer.cornerRadius = profileView.bounds.width / 2
         
@@ -57,6 +47,23 @@ class ConversationsListViewController: UIViewController {
         
         let openProfileGesture = UITapGestureRecognizer(target: self, action: #selector(openProfile))
         profileView?.addGestureRecognizer(openProfileGesture)
+        
+        loadChannels()
+    }
+    
+    private func loadChannels() {
+        channelsService.subscribeOnChannels { [weak self] (result) in
+            switch result {
+            case .success(let channels):
+                DispatchQueue.main.async {
+                    self?.channels = channels
+                    // По-хорошему можно обновлять с анимацией добавления, перемещения канала
+                    self?.tableView.reloadData()
+                }
+            case .failure(let error):
+                print("Не удалось загрузить каналы: \(error)")
+            }
+        }
     }
     
     @objc
@@ -66,8 +73,7 @@ class ConversationsListViewController: UIViewController {
         self.present(profileVC, animated: true)
     }
     
-    
-    private func configureTheme(_ theme: ThemeModel){
+    private func configureTheme(_ theme: ThemeModel) {
         UITableView.appearance().backgroundColor = theme.backgroundColor
         UITableViewCell.appearance().backgroundColor = theme.backgroundColor
 
@@ -78,56 +84,72 @@ class ConversationsListViewController: UIViewController {
         self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.textColor]
         self.view.backgroundColor = theme.backgroundColor
     }
-}
-
-extension ConversationsListViewController: UITableViewDelegate, UITableViewDataSource {
     
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return conversationsList.count
+    @IBAction func addChannelButtonAction(_ sender: Any) {
+        
+        let alert = UIAlertController(title: "Создать новый канад", message: "Введите название", preferredStyle: .alert)
+        
+        alert.addTextField { (textField) in
+            textField.placeholder = "Enter channel name here..."
+        }
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak self] _ in
+            if let name = alert.textFields?.first?.text,
+               !name.isEmpty {
+                self?.channelsService.createChannel(name: name) { (result) in
+                    if case Result.failure(_) = result {
+                        //self?.showErrorAlert(message: "Error during create new channel, try later.")
+                    }
+                }
+            } else {
+                //self?.showErrorAlert(message: "Channel name can't be empty.")
+            }
+        }))
+        present(alert, animated: true)
+        
     }
     
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if section == 0 {
-            return "Online"
-        } else {
-            return "History"
-        }
+}
+
+extension ConversationsListViewController: UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return conversationsList[section].count
+        return channels.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let ConversationsListCell = tableView.dequeueReusableCell(withIdentifier: "ConversationsListCell") as? ConversationsListCell
-        guard let cell = ConversationsListCell else { return UITableViewCell()}
-        
-        let item = conversationsList[indexPath.section][indexPath.row]
-        cell.configure(with: item)
-        
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ConversationsListCell else {
+            return UITableViewCell()
+        }
+        let channel = channels[indexPath.row]
+        cell.configure(with: channel)
         return cell
     }
+}
+    
+extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let name = conversationsList[indexPath.section][indexPath.row].name
         
-        let storyBoard: UIStoryboard = UIStoryboard(name: "ConversationViewController", bundle:nil)
-        let resultViewController = storyBoard.instantiateViewController(withIdentifier: "ConversationViewController") as? ConversationViewController
-        guard let destinationController = resultViewController else { return }
-        destinationController.name = name
-        self.navigationController?.pushViewController(destinationController, animated: true)
-        
-    }
-
-    func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
-        if let headerView = view as? UITableViewHeaderFooterView {
-            headerView.contentView.backgroundColor = Theme.current.sectionHeaderBackgroundColor
-            headerView.textLabel?.textColor = Theme.current.textColor
+        tableView.deselectRow(at: indexPath, animated: true)
+        guard let conversationViewController = UIStoryboard(name: "ConversationViewController", bundle: nil)
+                .instantiateViewController(withIdentifier: "ConversationViewController") as? ConversationViewController else {
+            return
         }
+        
+        let chanel = channels[indexPath.row]
+        conversationViewController.title = chanel.name
+        conversationViewController.channel = chanel
+        navigationController?.pushViewController(conversationViewController, animated: true)
+        
     }
-    
 }
-
+    
 //extension ConversationsListViewController: ThemesPickerDelegate{
 //    func setTheme(_ theme: ThemeModel) {
 //        Theme.current = theme

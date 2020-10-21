@@ -34,7 +34,6 @@ class ProfileViewController: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    
     let imagePicker = UIImagePickerController()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -72,7 +71,6 @@ class ProfileViewController: UIViewController {
         //photoImageView.backgroundColor = UIColor(red: 0.89, green: 0.91, blue: 0.17, alpha: 1.00)
         photoImageView.layer.cornerRadius = photoImageView.bounds.width / 2
         
-        
         loadManager.getProfile { (userProfile) in
             self.nameTextField.text = userProfile.name
             self.descriptionTextView.text = userProfile.description
@@ -91,11 +89,6 @@ class ProfileViewController: UIViewController {
         /*
          frame отличаются, потому что в методе viewDidload еще не установлены финальные размеры и положения subviews
          */
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     @IBAction func saveGCDAction(_ sender: Any) {
@@ -134,14 +127,13 @@ class ProfileViewController: UIViewController {
         let newDescription = descriptionTextView.text ?? "Description"
         let newPhoto = photoImageView.image ?? UIImage(named: "avatarPlaceholder")!
         
-        
         newUserProfile?.name = newName
         newUserProfile?.description = newDescription
         newUserProfile?.photo = newPhoto
         
         saveManager.saveProfile(profile: newUserProfile!) { error in
             
-            if (error == nil) {
+            if error == nil {
                 
                 self.newUserProfile?.dataWasChanged = false
                 self.switchEditMode(isDataChanged: self.newUserProfile?.dataWasChanged ?? false)
@@ -154,7 +146,7 @@ class ProfileViewController: UIViewController {
             } else {
                 let errorAlert = UIAlertController(title: "Error", message: "Can't save changes", preferredStyle: .alert)
                 let continueAction = UIAlertAction(title: "OK", style: .default, handler: nil)
-                let repeatAction = UIAlertAction(title: "Repeat", style: .default, handler: { (action) in
+                let repeatAction = UIAlertAction(title: "Repeat", style: .default, handler: { (_) in
                     self.saveData()
                 })
                 errorAlert.addAction(continueAction)
@@ -167,21 +159,19 @@ class ProfileViewController: UIViewController {
         
     }
     
-    
-    
     @IBAction func editImageButtonAction(_ sender: Any) {
         
         imagePicker.delegate = self
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Выбрать из галереи", style: .default, handler: { (button) in
+        alert.addAction(UIAlertAction(title: "Выбрать из галереи", style: .default, handler: { (_) in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "Сделать фото", style: .default, handler: { (button) in
-            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)) {
+        alert.addAction(UIAlertAction(title: "Сделать фото", style: .default, handler: { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                 self.imagePicker.sourceType = .camera
                 self.present(self.imagePicker, animated: true, completion: nil)
             } else {
@@ -199,7 +189,6 @@ class ProfileViewController: UIViewController {
         
         present(alert, animated: true, completion: nil)
     }
-    
     
     @IBAction func editProfileButtonAction(_ sender: Any) {
         saveButtonsFadeFunction()
@@ -225,9 +214,9 @@ class ProfileViewController: UIViewController {
                 self.nameTextField.isUserInteractionEnabled = false
                 self.descriptionTextView.isEditable = false
                 self.descriptionTextView.layer.borderWidth = 0
-            }) { (finished) in
+            }, completion: { (_) in
                 self.editImageButton.isHidden = true
-            }
+            })
         }
         
     }
@@ -245,7 +234,6 @@ class ProfileViewController: UIViewController {
         switchEditMode(isDataChanged: newUserProfile?.dataWasChanged ?? false)
         
     }
- 
     
     func switchEditMode(isDataChanged: Bool) {
         
@@ -298,7 +286,7 @@ class ProfileViewController: UIViewController {
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
         
         photoImageView.image = pickedImage
@@ -310,13 +298,11 @@ extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationCo
         switchEditMode(isDataChanged: newUserProfile?.dataWasChanged ?? false)
     }
     
-    
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true, completion: nil)
     }
     
 }
-
 
 extension ProfileViewController: UITextViewDelegate {
     

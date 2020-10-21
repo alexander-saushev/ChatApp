@@ -25,7 +25,7 @@
             </objects>
             <point key="canvasLocation" x="-1248" y="17"/>
         </scene>
-        <!--Tinkoff Chat-->
+        <!--Channels-->
         <scene sceneID="k7A-Sd-4bn">
             <objects>
                 <viewController id="ZFl-Bw-qb2" customClass="ConversationsListViewController" customModule="ChatApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -47,35 +47,43 @@
                             <constraint firstItem="Wxc-uC-6HW" firstAttribute="bottom" secondItem="oSt-Bg-UBo" secondAttribute="bottom" id="uqI-3D-tos"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Tinkoff Chat" id="K9T-1f-X9i">
+                    <navigationItem key="navigationItem" title="Channels" id="K9T-1f-X9i">
                         <barButtonItem key="leftBarButtonItem" image="settings" id="yt0-sF-Fr7">
                             <connections>
                                 <action selector="settingsButtonAction:" destination="ZFl-Bw-qb2" id="7Gd-LY-6G5"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem key="rightBarButtonItem" id="DHR-nj-Wdr">
-                            <view key="customView" contentMode="scaleToFill" id="Ap1-Ki-6tn">
-                                <rect key="frame" x="354" y="2" width="40" height="40"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ob7-hk-6AX">
-                                        <rect key="frame" x="5" y="8.5" width="30" height="23"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" red="0.88990670439999997" green="0.91766613720000001" blue="0.1681906581" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
-                                <constraints>
-                                    <constraint firstItem="ob7-hk-6AX" firstAttribute="top" secondItem="Ap1-Ki-6tn" secondAttribute="top" constant="8.5" id="IyP-vj-Wol"/>
-                                    <constraint firstAttribute="trailing" secondItem="ob7-hk-6AX" secondAttribute="trailing" constant="5" id="kcU-Ql-r0P"/>
-                                    <constraint firstAttribute="bottom" secondItem="ob7-hk-6AX" secondAttribute="bottom" constant="8.5" id="wyI-Wt-ChK"/>
-                                    <constraint firstItem="ob7-hk-6AX" firstAttribute="leading" secondItem="Ap1-Ki-6tn" secondAttribute="leading" constant="5" id="yR0-db-ugS"/>
-                                </constraints>
-                            </view>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem id="DHR-nj-Wdr">
+                                <view key="customView" contentMode="scaleToFill" id="Ap1-Ki-6tn">
+                                    <rect key="frame" x="354" y="2" width="40" height="40"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="MD" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ob7-hk-6AX">
+                                            <rect key="frame" x="5" y="8.5" width="30" height="23"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" red="0.88990670439999997" green="0.91766613720000001" blue="0.1681906581" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                    <constraints>
+                                        <constraint firstItem="ob7-hk-6AX" firstAttribute="top" secondItem="Ap1-Ki-6tn" secondAttribute="top" constant="8.5" id="IyP-vj-Wol"/>
+                                        <constraint firstAttribute="trailing" secondItem="ob7-hk-6AX" secondAttribute="trailing" constant="5" id="kcU-Ql-r0P"/>
+                                        <constraint firstAttribute="bottom" secondItem="ob7-hk-6AX" secondAttribute="bottom" constant="8.5" id="wyI-Wt-ChK"/>
+                                        <constraint firstItem="ob7-hk-6AX" firstAttribute="leading" secondItem="Ap1-Ki-6tn" secondAttribute="leading" constant="5" id="yR0-db-ugS"/>
+                                    </constraints>
+                                </view>
+                            </barButtonItem>
+                            <barButtonItem systemItem="compose" id="u0S-31-Qj8">
+                                <connections>
+                                    <action selector="addChannelButtonAction:" destination="ZFl-Bw-qb2" id="F7S-Bd-yo4"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="addChannelBarButtonItem" destination="u0S-31-Qj8" id="idR-A7-cpW"/>
                         <outlet property="profileView" destination="Ap1-Ki-6tn" id="Svj-Sf-edc"/>
                         <outlet property="tableView" destination="Wxc-uC-6HW" id="h7k-oK-myn"/>
                     </connections>

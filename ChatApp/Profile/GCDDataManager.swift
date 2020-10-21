@@ -8,7 +8,6 @@
 
 import UIKit
 
-
 class GCDDataManager: GetAndSaveProfileProtocol {
     
     let fileDirectory: URL
@@ -19,7 +18,7 @@ class GCDDataManager: GetAndSaveProfileProtocol {
         archiveURL = fileDirectory.appendingPathComponent("profile").appendingPathExtension("plist")
     }
     
-    func getProfile(completion: @escaping (UserProfile) -> ()) {
+    func getProfile(completion: @escaping (UserProfile) -> Void) {
         
         DispatchQueue.global(qos: .utility).async {
             let name = UserDefaults.standard.string(forKey: "user_name") ?? "Name"
@@ -44,7 +43,7 @@ class GCDDataManager: GetAndSaveProfileProtocol {
         
     }
     
-    func saveProfile(profile: UserProfile, completion: @escaping (Error?) -> ()) {
+    func saveProfile(profile: UserProfile, completion: @escaping (Error?) -> Void) {
         
         DispatchQueue.global(qos: .utility).async {
             sleep(1)
@@ -73,8 +72,6 @@ class GCDDataManager: GetAndSaveProfileProtocol {
         }
     }
     
-
-    
     func saveImage(_ image: UIImage) throws {
         
         guard let imageData = image.jpegData(compressionQuality: 1.0) else { throw
@@ -87,7 +84,6 @@ class GCDDataManager: GetAndSaveProfileProtocol {
         }
     }
 }
-
 
 enum DataImageError: Error {
     case dataError

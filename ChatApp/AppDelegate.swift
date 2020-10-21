@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import Firebase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -89,16 +89,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
     }
     
-    
-    
     func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
         return true
     }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
         
+        FirebaseApp.configure()
+        
+        stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
         
         let userDefaults = UserDefaults.standard
         let theme = userDefaults.string(forKey: "Theme")
@@ -137,9 +137,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
     }
 }
-
-
-
-
-
-

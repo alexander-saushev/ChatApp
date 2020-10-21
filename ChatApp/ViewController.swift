@@ -51,13 +51,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
         
-        alert.addAction(UIAlertAction(title: "Выбрать из галереи", style: .default, handler: { (button) in
+        alert.addAction(UIAlertAction(title: "Выбрать из галереи", style: .default, handler: { (_) in
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
         
-        alert.addAction(UIAlertAction(title: "Сделать фото", style: .default, handler: { (button) in
-            if (UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)) {
+        alert.addAction(UIAlertAction(title: "Сделать фото", style: .default, handler: { (_) in
+            if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera) {
                 self.imagePicker.sourceType = .camera
                 self.present(self.imagePicker, animated: true, completion: nil)
             } else {
@@ -73,7 +73,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         present(alert, animated: true, completion: nil)
     }
     
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let pickedImage = info[UIImagePickerController.InfoKey.editedImage] as? UIImage else { return }
         photoImageView.image = pickedImage
         photoImageView.backgroundColor = .clear

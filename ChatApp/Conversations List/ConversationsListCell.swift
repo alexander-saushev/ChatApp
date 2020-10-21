@@ -15,8 +15,7 @@ class ConversationsListCell: UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     
-    
-    func configure(with model: ConversationCellModel) {
+    func configure(with model: Channel) {
         self.selectionStyle = .none
         
         setTheme()
@@ -24,33 +23,22 @@ class ConversationsListCell: UITableViewCell {
         photoView.layer.cornerRadius = photoView.bounds.width / 2
         nameLabel.text = model.name
         
-        if model.message == "" {
+        if model.lastMessage == "" {
             messageLabel.text = "No messages yet"
             messageLabel.font = .italicSystemFont(ofSize: 14)
             dateLabel.text = ""
         } else {
             
-            if model.hasUnreadMessages {
-                messageLabel.font = .boldSystemFont(ofSize: 14)
-            } else {
-                messageLabel.font = .systemFont(ofSize: 14)
-            }
+            messageLabel?.font = .none
+            messageLabel.text = model.lastMessage
             
-            messageLabel.text = model.message
-            
-            dateLabel.text = formDate(model.date)
-        }
-        
-        if model.isOnline {
-            backgroundColor = UIColor(red: 1.00, green: 0.95, blue: 0.74, alpha: 1.00).withAlphaComponent(0.5)
-        } else {
-            backgroundColor = Theme.current.backgroundColor
+            dateLabel?.text = formDate(model.lastActivity ?? Date())
         }
     }
     
     private func formDate(_ date: Date) -> String {
         let calendar = Calendar(identifier: .gregorian)
-        if calendar.isDateInToday(date){
+        if calendar.isDateInToday(date) {
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm"
             let localDate = dateFormatter.string(from: date)
@@ -63,7 +51,7 @@ class ConversationsListCell: UITableViewCell {
         }
     }
     
-    private func setTheme(){
+    private func setTheme() {
         nameLabel?.textColor = Theme.current.textColor
         messageLabel?.textColor = Theme.current.conversationsListTextColor
         dateLabel?.textColor = Theme.current.conversationsListTextColor

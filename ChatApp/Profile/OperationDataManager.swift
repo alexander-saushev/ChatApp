@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 
-
 class OperationDataManager: GetAndSaveProfileProtocol {
     
     let fileDirectory: URL
@@ -21,14 +20,14 @@ class OperationDataManager: GetAndSaveProfileProtocol {
         archiveURL = fileDirectory.appendingPathComponent("profile").appendingPathExtension("plist")
     }
     
-    func getProfile(completion: @escaping (UserProfile) -> ()) {
+    func getProfile(completion: @escaping (UserProfile) -> Void) {
         let getOperation = GetUserProfile()
         getOperation.archiveURL = archiveURL
         getOperation.completionHandler = completion
         operationQueue.addOperation(getOperation)
     }
     
-    func saveProfile(profile: UserProfile, completion: @escaping (Error?) -> ()) {
+    func saveProfile(profile: UserProfile, completion: @escaping (Error?) -> Void) {
         
         let saveOperation = SaveUserProfile(nameChanged: profile.nameWasChanged, descriptionChanged: profile.descriptionWasChanged, photoChanged: profile.photoWasChanged)
         saveOperation.userProfile = profile
@@ -39,12 +38,11 @@ class OperationDataManager: GetAndSaveProfileProtocol {
     }
 }
 
-
 class GetUserProfile: Operation {
     
     var profile: UserProfile!
     var archiveURL: URL!
-    var completionHandler: ((UserProfile) -> ())!
+    var completionHandler: ((UserProfile) -> Void)!
     
     override func main() {
         sleep(1)
@@ -74,7 +72,7 @@ class GetUserProfile: Operation {
 class SaveUserProfile: Operation {
     var userProfile: UserProfile!
 
-    var completionHandler: ((Error?) -> ())!
+    var completionHandler: ((Error?) -> Void)!
     var archiveURL: URL!
     
     let nameChanged: Bool

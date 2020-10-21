@@ -134,5 +134,5 @@ var messageExample: [MessageCellModel] = [
     MessageCellModel(text: "сообщений,", isIncoming: false),
     MessageCellModel(text: "чтобы", isIncoming: true),
     MessageCellModel(text: "проверить", isIncoming: true),
-    MessageCellModel(text: "скролл", isIncoming: true),
+    MessageCellModel(text: "скролл", isIncoming: true)
 ]

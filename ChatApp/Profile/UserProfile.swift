@@ -18,4 +18,3 @@ struct UserProfile {
     var photoWasChanged: Bool = false
     var dataWasChanged: Bool = false
 }
-
