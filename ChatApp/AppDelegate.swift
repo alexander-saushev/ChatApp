@@ -98,6 +98,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         FirebaseApp.configure()
         
+        CoreDataStack.shared.didUpdateDataBase = { stack in
+          stack.printDatabaseStatistics()
+        }
+        
+        CoreDataStack.shared.enableObservers()
+        
         stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
         
         let userDefaults = UserDefaults.standard

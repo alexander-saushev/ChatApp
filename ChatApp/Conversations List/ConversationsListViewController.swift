@@ -10,8 +10,6 @@ import UIKit
 
 class ConversationsListViewController: UIViewController {
     
-    lazy var channelsService = ChannelsService()
-    
     var channels: [Channel] = []
     
     private let cellId = String(describing: ConversationsListCell.self)
@@ -25,7 +23,6 @@ class ConversationsListViewController: UIViewController {
         let resultViewController = themeStoryboard.instantiateViewController(withIdentifier: "ThemesViewController") as? ThemesViewController
         guard let destinationController = resultViewController else { return }
         
-        // destinationController.delegate = self
         destinationController.setTheme = { [weak self] theme in
             Theme.current = theme
             self?.configureTheme(theme)
@@ -52,16 +49,14 @@ class ConversationsListViewController: UIViewController {
     }
     
     private func loadChannels() {
-        channelsService.subscribeOnChannels { [weak self] (result) in
+        FirebaseManager.shared.getChannels { (result) in
             switch result {
             case .success(let channels):
-                DispatchQueue.main.async {
-                    self?.channels = channels
-                    // По-хорошему можно обновлять с анимацией добавления, перемещения канала
-                    self?.tableView.reloadData()
+                self.channels = channels.sorted {
+                    $0.lastActivity ?? Date() > $1.lastActivity ?? Date()
                 }
-            case .failure(let error):
-                print("Не удалось загрузить каналы: \(error)")
+                self.tableView.reloadData()
+            case .failure: break
             }
         }
     }
@@ -76,9 +71,9 @@ class ConversationsListViewController: UIViewController {
     private func configureTheme(_ theme: ThemeModel) {
         UITableView.appearance().backgroundColor = theme.backgroundColor
         UITableViewCell.appearance().backgroundColor = theme.backgroundColor
-
+        
         tableView?.reloadData()
-
+        
         self.navigationController?.navigationBar.barStyle = theme.navigationBarStyle
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.textColor]
         self.navigationController?.navigationBar.largeTitleTextAttributes = [NSAttributedString.Key.foregroundColor: theme.textColor]
@@ -87,27 +82,22 @@ class ConversationsListViewController: UIViewController {
     
     @IBAction func addChannelButtonAction(_ sender: Any) {
         
-        let alert = UIAlertController(title: "Создать новый канад", message: "Введите название", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "New channel", message: nil, preferredStyle: .alert)
         
-        alert.addTextField { (textField) in
-            textField.placeholder = "Enter channel name here..."
+        let createAction = UIAlertAction(title: "Create", style: .default) {_ in
+            let text = alertController.textFields?.first?.text
+            guard let channelName = text else { return }
+            FirebaseManager.shared.addNewChannel(name: channelName)
+            
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alertController.addTextField { (textField) in
+            textField.placeholder = "Enter name"
+        }
+        alertController.addAction(createAction)
+        alertController.addAction(cancelAction)
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Create", style: .default, handler: { [weak self] _ in
-            if let name = alert.textFields?.first?.text,
-               !name.isEmpty {
-                self?.channelsService.createChannel(name: name) { (result) in
-                    if case Result.failure(_) = result {
-                        //self?.showErrorAlert(message: "Error during create new channel, try later.")
-                    }
-                }
-            } else {
-                //self?.showErrorAlert(message: "Channel name can't be empty.")
-            }
-        }))
-        present(alert, animated: true)
-        
+        self.present(alertController, animated: true, completion: nil)
     }
     
 }
@@ -131,7 +121,7 @@ extension ConversationsListViewController: UITableViewDataSource {
         return cell
     }
 }
-    
+
 extension ConversationsListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -149,7 +139,7 @@ extension ConversationsListViewController: UITableViewDelegate {
         
     }
 }
-    
+
 //extension ConversationsListViewController: ThemesPickerDelegate{
 //    func setTheme(_ theme: ThemeModel) {
 //        Theme.current = theme

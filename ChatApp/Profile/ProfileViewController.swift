@@ -68,7 +68,6 @@ class ProfileViewController: UIViewController {
         self.descriptionTextView.isEditable = false
         self.descriptionTextView.layer.borderWidth = 0
         
-        //photoImageView.backgroundColor = UIColor(red: 0.89, green: 0.91, blue: 0.17, alpha: 1.00)
         photoImageView.layer.cornerRadius = photoImageView.bounds.width / 2
         
         loadManager.getProfile { (userProfile) in

@@ -15,20 +15,3 @@ struct Channel {
     let lastMessage: String?
     let lastActivity: Date?
 }
-
-extension Channel {
-    
-    init?(identifier: String, firestoreData: [String: Any]) {
-        guard let name = firestoreData["name"] as? String else {
-            return nil
-        }
-        self.identifier = identifier
-        self.name = name
-        self.lastMessage = firestoreData["lastMessage"] as? String
-        if let timeStamp = firestoreData["lastActivity"] as? Timestamp {
-            self.lastActivity = timeStamp.dateValue()
-        } else {
-            self.lastActivity = nil
-        }
-    }
-}

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="17156" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17126"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="71" id="57l-g7-1HH" customClass="OutgoingMessageCell" customModule="ChatApp" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="57l-g7-1HH" id="vp1-hv-AdA">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rgu-fc-dOj">
+                        <rect key="frame" x="94" y="10" width="266" height="34"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="byJ-rv-apO">
+                                <rect key="frame" x="8" y="7" width="250" height="20"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemGray5Color"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="byJ-rv-apO" secondAttribute="trailing" constant="8" id="BCP-bh-Adp"/>
+                            <constraint firstItem="byJ-rv-apO" firstAttribute="top" secondItem="Rgu-fc-dOj" secondAttribute="top" constant="7" id="FwW-Zo-NUW"/>
+                            <constraint firstItem="byJ-rv-apO" firstAttribute="leading" secondItem="Rgu-fc-dOj" secondAttribute="leading" constant="8" id="MGA-HH-Q22"/>
+                            <constraint firstAttribute="bottom" secondItem="byJ-rv-apO" secondAttribute="bottom" constant="7" id="cmg-Ui-qpN"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="byJ-rv-apO" firstAttribute="width" relation="lessThanOrEqual" secondItem="vp1-hv-AdA" secondAttribute="width" multiplier="0.666667" id="0da-Tx-YdH"/>
+                    <constraint firstItem="Rgu-fc-dOj" firstAttribute="top" secondItem="vp1-hv-AdA" secondAttribute="top" constant="10" id="8g1-am-hly"/>
+                    <constraint firstAttribute="leading" secondItem="Rgu-fc-dOj" secondAttribute="leading" priority="999" constant="15" id="VHa-qZ-HG7" userLabel="Outgoing Message Leading Constraint"/>
+                    <constraint firstItem="Rgu-fc-dOj" firstAttribute="trailing" secondItem="vp1-hv-AdA" secondAttribute="trailing" constant="-15" id="lQO-xa-rMK"/>
+                    <constraint firstAttribute="bottom" secondItem="Rgu-fc-dOj" secondAttribute="bottom" constant="10" id="tBr-Cs-TRf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="2LO-9g-Rt8"/>
+            <connections>
+                <outlet property="outgoingBubbleView" destination="Rgu-fc-dOj" id="2xG-d0-Gqd"/>
+                <outlet property="outgoingMessageLabel" destination="byJ-rv-apO" id="bZG-nV-tMG"/>
+                <outlet property="outgoingMessageLeadingConstraint" destination="VHa-qZ-HG7" id="eNP-dL-4Cv"/>
+            </connections>
+            <point key="canvasLocation" x="136.80000000000001" y="81.2807881773399"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
