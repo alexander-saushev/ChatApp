@@ -15,7 +15,7 @@ class ConversationsListCell: UITableViewCell {
     @IBOutlet weak var messageLabel: UILabel!
     @IBOutlet weak var dateLabel: UILabel!
     
-    func configure(with model: Channel) {
+    func configure(with model: Channel_db) {
         self.selectionStyle = .none
         
         setTheme()
@@ -28,10 +28,8 @@ class ConversationsListCell: UITableViewCell {
             messageLabel.font = .italicSystemFont(ofSize: 14)
             dateLabel.text = ""
         } else {
-            
             messageLabel?.font = .none
             messageLabel.text = model.lastMessage
-            
             dateLabel?.text = formDate(model.lastActivity ?? Date())
         }
     }

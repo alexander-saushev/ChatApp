@@ -19,6 +19,6 @@ final class NightTheme: ThemeModel {
     var conversationsListTextColor: UIColor = UIColor(red: 0.55, green: 0.55, blue: 0.58, alpha: 1.00)
     var saveButtonColor = UIColor(red: 0.11, green: 0.11, blue: 0.11, alpha: 1.00)
     var profileHeaderColor = UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1.00)
-    var sectionHeaderBackgroundColor = UIColor(red: 0.20, green: 0.20, blue: 0.20, alpha: 1.00)
+    var sectionHeaderBackgroundColor = UIColor(red: 0.23, green: 0.23, blue: 0.23, alpha: 1.00)
     var alertBackgroundColor: UIColor = UIColor(red: 0.19, green: 0.19, blue: 0.19, alpha: 1.00)
 }

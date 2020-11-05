@@ -17,7 +17,7 @@ class OutgoingMessageCell: UITableViewCell {
 
 extension OutgoingMessageCell: ConfigurableView {
     
-    func configure(with model: Message) {
+    func configure(with model: Message_db) {
         
         outgoingBubbleView?.layer.cornerRadius = 10
         outgoingMessageLabel?.text = model.content

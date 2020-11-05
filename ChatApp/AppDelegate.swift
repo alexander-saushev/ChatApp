@@ -104,7 +104,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         CoreDataStack.shared.enableObservers()
         
-        stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
+        //stateLogger(currentState: UIApplication.shared.applicationState, methodName: #function)
         
         let userDefaults = UserDefaults.standard
         let theme = userDefaults.string(forKey: "Theme")

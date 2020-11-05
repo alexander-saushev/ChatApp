@@ -21,7 +21,8 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var gcdSaveButton: UIButton!
     @IBOutlet weak var operationSaveButton: UIButton!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
-
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     let loadManager = GCDDataManager()
 //    let loadManager = OperationDataManager()
     var saveManager: GetAndSaveProfileProtocol!
@@ -78,7 +79,12 @@ class ProfileViewController: UIViewController {
             self.activityIndicator.stopAnimating()
         }
         
-        registerNotifications()
+        addKeyboardGesture()
+        
+//        NotificationCenter.default.addObserver(self, selector: #selector(kbDidShow), name: UIResponder.keyboardDidShowNotification, object: nil)
+//        NotificationCenter.default.addObserver(self, selector: #selector(kbDidHide), name: UIResponder.keyboardDidHideNotification, object: nil)
+        
+        //registerNotifications()
         
     }
     
@@ -88,6 +94,16 @@ class ProfileViewController: UIViewController {
         /*
          frame отличаются, потому что в методе viewDidload еще не установлены финальные размеры и положения subviews
          */
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        addKeyboardObserver()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardObserver()
     }
     
     @IBAction func saveGCDAction(_ sender: Any) {
@@ -227,7 +243,8 @@ class ProfileViewController: UIViewController {
             newUserProfile?.dataWasChanged = true
         } else {
             newUserProfile?.nameWasChanged = false
-            newUserProfile?.dataWasChanged = newUserProfile?.descriptionWasChanged ?? false || newUserProfile?.photoWasChanged ?? false
+            let dataWasChanged = newUserProfile?.descriptionWasChanged ?? false || newUserProfile?.photoWasChanged ?? false
+            newUserProfile?.dataWasChanged = dataWasChanged
         }
         
         switchEditMode(isDataChanged: newUserProfile?.dataWasChanged ?? false)
@@ -264,23 +281,6 @@ class ProfileViewController: UIViewController {
         headerLabel?.textColor = Theme.current.textColor
         headerView?.backgroundColor = Theme.current.profileHeaderColor
     }
-    
-    func registerNotifications() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardDidAppear), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWiilDissapear), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    @objc func keyboardDidAppear(_ notification: NSNotification) {
-        guard let keyboardRect = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        view.frame.origin.y = -keyboardRect.height
-    }
-    
-    @objc func keyboardWiilDissapear() {
-        view.frame.origin.y = 0
-    }
-    
 }
 
 extension ProfileViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -312,10 +312,49 @@ extension ProfileViewController: UITextViewDelegate {
             newUserProfile?.dataWasChanged = true
         } else {
             newUserProfile?.descriptionWasChanged = false
-            newUserProfile?.dataWasChanged = newUserProfile?.nameWasChanged ?? false || newUserProfile?.photoWasChanged ?? false
+            let dataWasChanged = newUserProfile?.nameWasChanged ?? false || newUserProfile?.photoWasChanged ?? false
+            newUserProfile?.dataWasChanged = dataWasChanged
         }
         
         switchEditMode(isDataChanged: newUserProfile?.dataWasChanged ?? false)
         
+    }
+}
+
+// MARK: Keyboard settings
+extension ProfileViewController {
+    private func addKeyboardGesture() {
+        let keyboardHideGesture = UITapGestureRecognizer(target: self, action: #selector(hideKeyboard))
+        keyboardHideGesture.cancelsTouchesInView = false
+        self.scrollView.addGestureRecognizer(keyboardHideGesture)
+    }
+    
+    private func addKeyboardObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeKeyboardObserver() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
+        let info = notification.userInfo! as NSDictionary
+        let size = (info.value(forKey: UIResponder.keyboardFrameEndUserInfoKey) as? NSValue)?.cgRectValue
+        let window = UIApplication.shared.keyWindow
+        let bottomPadding = window?.safeAreaInsets.bottom
+        
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: ((size?.height ?? 0) - (bottomPadding ?? 0)), right: 0)
+        self.scrollView?.contentInset = contentInsets
+        self.scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    @objc private func keyboardWillHide(notification: Notification) {
+        scrollView.contentInset = .zero
+    }
+    
+    @objc private func hideKeyboard() {
+        self.scrollView.endEditing(true)
     }
 }

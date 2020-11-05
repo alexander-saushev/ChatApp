@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationsListViewController: UIViewController {
     
-    var channels: [Channel] = []
-    
     private let cellId = String(describing: ConversationsListCell.self)
+    
+    private var fetchedResultsController: NSFetchedResultsController<Channel_db>!
     
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var profileView: UIView!
@@ -49,16 +50,14 @@ class ConversationsListViewController: UIViewController {
     }
     
     private func loadChannels() {
-        FirebaseManager.shared.getChannels { (result) in
-            switch result {
-            case .success(let channels):
-                self.channels = channels.sorted {
-                    $0.lastActivity ?? Date() > $1.lastActivity ?? Date()
-                }
-                self.tableView.reloadData()
-            case .failure: break
-            }
-        }
+        FirebaseManager.shared.getChannels()
+            let request: NSFetchRequest<Channel_db> = Channel_db.fetchRequest()
+            let sortDescriptor = NSSortDescriptor(keyPath: \Channel_db.lastActivity, ascending: false)
+            request.sortDescriptors = [sortDescriptor]
+            fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                 managedObjectContext: CoreDataStack.shared.mainContext, sectionNameKeyPath: nil, cacheName: nil)
+              try? self.fetchedResultsController.performFetch()
+              self.fetchedResultsController.delegate = self
     }
     
     @objc
@@ -83,23 +82,27 @@ class ConversationsListViewController: UIViewController {
     @IBAction func addChannelButtonAction(_ sender: Any) {
         
         let alertController = UIAlertController(title: "New channel", message: nil, preferredStyle: .alert)
+        alertController.addTextField()
         
         let createAction = UIAlertAction(title: "Create", style: .default) {_ in
             let text = alertController.textFields?.first?.text
-            guard let channelName = text else { return }
-            FirebaseManager.shared.addNewChannel(name: channelName)
             
+            let letters = NSCharacterSet.letters
+            let range = text?.rangeOfCharacter(from: letters)
+            guard let channelName = text, range != nil else {
+                let errorAlert = UIAlertController(title: "Error", message: "You can't create channel without name", preferredStyle: .alert)
+                errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(errorAlert, animated: true, completion: nil)
+                return }
+            FirebaseManager.shared.addNewChannel(name: channelName)
         }
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alertController.addTextField { (textField) in
-            textField.placeholder = "Enter name"
-        }
+        
         alertController.addAction(createAction)
         alertController.addAction(cancelAction)
         
         self.present(alertController, animated: true, completion: nil)
     }
-    
 }
 
 extension ConversationsListViewController: UITableViewDataSource {
@@ -109,16 +112,28 @@ extension ConversationsListViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return channels.count
+        guard let sections = fetchedResultsController?.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? ConversationsListCell else {
             return UITableViewCell()
         }
-        let channel = channels[indexPath.row]
+        let channel = fetchedResultsController.object(at: indexPath)
         cell.configure(with: channel)
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        .delete
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+          let channel = fetchedResultsController.object(at: indexPath)
+            FirebaseManager.shared.deleteChannel(channel: channel)
+        }
     }
 }
 
@@ -132,12 +147,42 @@ extension ConversationsListViewController: UITableViewDelegate {
             return
         }
         
-        let chanel = channels[indexPath.row]
-        conversationViewController.title = chanel.name
-        conversationViewController.channel = chanel
+        let channel = fetchedResultsController.object(at: indexPath)
+        conversationViewController.title = channel.name
+        conversationViewController.channel = channel
         navigationController?.pushViewController(conversationViewController, animated: true)
         
     }
+}
+
+extension ConversationsListViewController: NSFetchedResultsControllerDelegate {
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    tableView.beginUpdates()
+  }
+
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    tableView.endUpdates()
+  }
+
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
+    switch type {
+    case .insert:
+      tableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .update:
+      tableView.reloadRows(at: [indexPath!], with: .automatic)
+    case .move:
+      tableView.deleteRows(at: [indexPath!], with: .automatic)
+      tableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .delete:
+      tableView.deleteRows(at: [indexPath!], with: .automatic)
+    @unknown default:
+      fatalError()
+    }
+  }
 }
 
 //extension ConversationsListViewController: ThemesPickerDelegate{

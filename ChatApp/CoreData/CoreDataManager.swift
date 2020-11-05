@@ -16,39 +16,64 @@ class CoreDataManager {
   
   let coreDataStack = CoreDataStack.shared
   
-  func makeSaveChannelsRequest(channels: [Channel]) {
-    var channelsDb = [Channel_db]()
+    func saveChannels(_ channels: [Channel]) {
+    
     coreDataStack.performSave { context in
-      channels.forEach {
-        channelsDb.append(Channel_db(identifier: $0.identifier,
-                                   name: $0.name,
-                                   lastActivity: $0.lastActivity,
-                                   lastMessage: $0.lastMessage,
-                                   in: context))
-      }
+        let request: NSFetchRequest<Channel_db> = Channel_db.fetchRequest()
+        let savedChannels = try? coreDataStack.mainContext.fetch(request)
+        channels.forEach { channel in
+            
+            let savedChannel = savedChannels?.filter {
+                $0.identifier == channel.identifier
+            }.first
+            
+            if savedChannel == nil {
+                Channel_db(identifier: channel.identifier,
+                           name: channel.name,
+                           lastActivity: channel.lastActivity,
+                           lastMessage: channel.lastMessage,
+                           in: context)
+            } else {
+                savedChannel?.name = channel.name
+                savedChannel?.lastActivity = channel.lastActivity
+                savedChannel?.lastMessage = channel.lastMessage
+            }
+        }
     }
   }
+    
+    func deleteChannel(_ channelObject: NSManagedObject) {
+
+      coreDataStack.mainContext.delete(channelObject)
+      coreDataStack.performSave(in: coreDataStack.mainContext)
+    }
   
-  func makeSaveMessagesRequest(channel: Channel, messages: [Message]) {
+    func saveMessages(_ channel: Channel_db, _ messages: [Message]) {
     
     coreDataStack.performSave { context in
 
       let request: NSFetchRequest<Channel_db> = Channel_db.fetchRequest()
-      request.predicate = NSPredicate(format: "identifier = %@", channel.identifier)
+      guard let identifier = channel.identifier else { return }
+      request.predicate = NSPredicate(format: "identifier = %@", identifier)
       let objects = try? context.fetch(request)
       guard let channel = objects?.first
       else { return }
       
       var messagesDb = [Message_db]()
-      messages.forEach {
-        let messageDb = Message_db(senderId: $0.senderId,
-                                   senderName: $0.senderName,
-                                   content: $0.content,
-                                   created: $0.created,
-                                   in: context)
-        messagesDb.append(messageDb)
-        channel.addToMessages(messageDb)
-      
+        messages.forEach { message in
+
+          let savedMessage = channel.messages?.filter {
+            message.created == ($0 as? Message_db)?.created
+          }.first
+          if savedMessage == nil {
+            let messageDb = Message_db(senderId: message.senderId,
+                                       senderName: message.senderName,
+                                       content: message.content,
+                                       created: message.created,
+                                       in: context)
+            messagesDb.append(messageDb)
+            channel.addToMessages(messageDb)
+          }
       }
       print("For channel:", channel.name!, "saved:", messagesDb.count, "messages")
     }
@@ -56,11 +81,11 @@ class CoreDataManager {
 }
 
 extension Channel_db {
-  convenience init(identifier: String,
-                   name: String,
-                   lastActivity: Date?,
-                   lastMessage: String?,
-                   in context: NSManagedObjectContext) {
+    @discardableResult convenience init(identifier: String,
+                                        name: String,
+                                        lastActivity: Date?,
+                                        lastMessage: String?,
+                                        in context: NSManagedObjectContext) {
     self.init(context: context)
     self.identifier = identifier
     self.name = name

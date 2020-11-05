@@ -7,29 +7,23 @@
 //
 
 import UIKit
+import CoreData
 
 class ConversationViewController: UIViewController {
-    
-    var channel: Channel?
-    private var messages = [Message]()
-    
-    let cellId = "\(IncommingMessageCell.self)"
-    let cellId2 = "\(OutgoingMessageCell.self)"
     
     @IBOutlet weak var chatTableView: UITableView!
     @IBOutlet weak var addButton: UIButton!
     @IBOutlet weak var messageTextView: UITextView!
     @IBOutlet weak var sendButton: UIButton!
+    @IBOutlet weak var messageAreaView: UIView!
+    @IBOutlet weak var messageAreaBottomConstraint: NSLayoutConstraint!
     
-    @IBAction func sendButtonAction(_ sender: Any) {
-        
-        guard let channel = self.channel else { return }
-        guard let message = messageTextView.text else { return }
-        guard message != "" else { return }
-        
-        FirebaseManager.shared.sendMessage(channelId: channel.identifier, message: message)
-        self.messageTextView.text = ""
-    }
+    let IncommingMessageCellId = "\(IncommingMessageCell.self)"
+    let OutgoingMessageCellId = "\(OutgoingMessageCell.self)"
+    
+    var channel: Channel_db!
+    
+    private var fetchedResultsController: NSFetchedResultsController<Message_db>!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,60 +39,140 @@ class ConversationViewController: UIViewController {
         chatTableView?.register(UINib(nibName: String(describing: OutgoingMessageCell.self), bundle: nil), forCellReuseIdentifier: String(describing: OutgoingMessageCell.self))
         
         loadMessages()
+        configKeyboard()
+    }
+    
+    @IBAction func sendButtonAction(_ sender: Any) {
+        
+        guard let channel = self.channel else { return }
+        guard let message = messageTextView.text else { return }
+        let letters = NSCharacterSet.letters
+        let range = message.rangeOfCharacter(from: letters)
+        guard range != nil else { return }
+        
+        guard let identifier = channel.identifier else { return }
+        FirebaseManager.shared.sendMessage(channelId: identifier, message: message)
+        self.messageTextView.text = ""
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        self.scrollToBottom(animated: true)
+        super.viewDidAppear(animated)
+
     }
     
     private func loadMessages() {
-        FirebaseManager.shared.getMessages(channel: channel!) { (result) in
-            switch result {
-            case .success(let messages):
-                self.messages = messages.sorted {
-                    $0.created < $1.created
-                }
-                self.chatTableView.reloadData()
-                self.scrollToBottom()
-            case .failure: break
-            }
-        }
+      FirebaseManager.shared.getMessages(channel: channel)
+      let request: NSFetchRequest<Message_db> = Message_db.fetchRequest()
+      request.predicate = NSPredicate(format: "channel == %@", channel)
+      let sortDescriptor = NSSortDescriptor(keyPath: \Message_db.created, ascending: true)
+      request.sortDescriptors = [sortDescriptor]
+      fetchedResultsController = NSFetchedResultsController(fetchRequest: request,
+                                                            managedObjectContext: CoreDataStack.shared.mainContext, sectionNameKeyPath: nil, cacheName: nil)
+      try? self.fetchedResultsController.performFetch()
+      self.fetchedResultsController.delegate = self
     }
     
-    private func scrollToBottom(animated: Bool = true) {
-        guard messages.count > 0 else { return }
-        DispatchQueue.main.async {
-            let indexPath = IndexPath(row: self.messages.count - 1, section: 0)
-            self.chatTableView.scrollToRow(at: indexPath, at: .bottom, animated: animated)
+    private func scrollToBottom(animated: Bool) {
+        let count = chatTableView.numberOfRows(inSection: 0)
+        if count > 0 {
+            let lastIndex = IndexPath(row: count - 1, section: 0)
+            chatTableView.scrollToRow(at: lastIndex, at: .top, animated: animated)
         }
     }
     
     private func setTheme() {
         self.view.backgroundColor = Theme.current.backgroundColor
+        self.messageAreaView.backgroundColor = Theme.current.profileHeaderColor
+        self.messageTextView.backgroundColor = Theme.current.backgroundColor
+        self.messageTextView.textColor = Theme.current.textColor
+        view.backgroundColor = Theme.current.profileHeaderColor
     }
     
+    private func configKeyboard() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(adjustForKeyboard), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func adjustForKeyboard(notification: Notification) {
+        guard let keyboardValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let keyboardDuration = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double else { return }
+
+        let keyboardScreenEndFrame: CGRect = keyboardValue.cgRectValue
+        
+        let window = UIApplication.shared.keyWindow
+        let bottomPadding = window?.safeAreaInsets.bottom
+        
+        if notification.name == UIResponder.keyboardWillHideNotification {
+            messageAreaBottomConstraint?.constant = 0
+        } else {
+            messageAreaBottomConstraint?.constant = keyboardScreenEndFrame.height - (bottomPadding ?? 0)
+            self.view.layoutIfNeeded()
+        }
+        
+        UIView.animate(withDuration: keyboardDuration) {
+            self.view.layoutIfNeeded()
+            self.scrollToBottom(animated: false)
+        }
+    }
 }
 
 extension ConversationViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return messages.count
+        guard let sections = fetchedResultsController?.sections else { return 0 }
+        return sections[section].numberOfObjects
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-      let chatMessage = messages[indexPath.row]
+      let chatMessage = fetchedResultsController.object(at: indexPath)
       if chatMessage.senderId == FirebaseManager.shared.senderId {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId2, for: indexPath) as? OutgoingMessageCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: OutgoingMessageCellId, for: indexPath) as? OutgoingMessageCell else {
             return UITableViewCell()
         }
-        cell.configure(with: messages[indexPath.row])
+        cell.configure(with: chatMessage)
         return cell
         
       } else {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as? IncommingMessageCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: IncommingMessageCellId, for: indexPath) as? IncommingMessageCell else {
             return UITableViewCell()
         }
-        cell.configure(with: messages[indexPath.row])
+        cell.configure(with: chatMessage)
         return cell
       }
     }
 }
 
 extension ConversationViewController: UITableViewDelegate {
+}
+
+extension ConversationViewController: NSFetchedResultsControllerDelegate {
+  func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    chatTableView.beginUpdates()
+  }
+
+  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+    chatTableView.endUpdates()
+  }
+
+  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>,
+                  didChange anObject: Any,
+                  at indexPath: IndexPath?,
+                  for type: NSFetchedResultsChangeType,
+                  newIndexPath: IndexPath?) {
+    switch type {
+    case .insert:
+        chatTableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .update:
+        chatTableView.reloadRows(at: [indexPath!], with: .automatic)
+    case .move:
+        chatTableView.deleteRows(at: [indexPath!], with: .automatic)
+        chatTableView.insertRows(at: [newIndexPath!], with: .automatic)
+    case .delete:
+        chatTableView.deleteRows(at: [indexPath!], with: .automatic)
+    @unknown default:
+      fatalError()
+    }
+  }
 }

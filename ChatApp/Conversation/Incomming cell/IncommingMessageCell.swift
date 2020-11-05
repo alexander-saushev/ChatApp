@@ -19,12 +19,13 @@ class IncommingMessageCell: UITableViewCell {
 
 extension IncommingMessageCell: ConfigurableView {
     
-    func configure(with model: Message) {
+    func configure(with model: Message_db) {
         
         bubbleView?.layer.cornerRadius = 10
         messageLabel?.text = model.content
         senderNameLabel?.text = model.senderName
         bubbleView?.backgroundColor = Theme.current.incommingMessageBubbleColor
+        senderNameLabel?.textColor = Theme.current.incommingMessageTextColor
         messageLabel?.textColor = Theme.current.incommingMessageTextColor
         trailingConstraint?.isActive = false
         leadingConstraint?.isActive = true
