@@ -87,8 +87,8 @@ class ConversationsListViewController: UIViewController {
         let createAction = UIAlertAction(title: "Create", style: .default) {_ in
             let text = alertController.textFields?.first?.text
             
-            let letters = NSCharacterSet.letters
-            let range = text?.rangeOfCharacter(from: letters)
+            let visibleSymbols = NSCharacterSet.whitespacesAndNewlines.inverted
+            let range = text?.rangeOfCharacter(from: visibleSymbols)
             guard let channelName = text, range != nil else {
                 let errorAlert = UIAlertController(title: "Error", message: "You can't create channel without name", preferredStyle: .alert)
                 errorAlert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))

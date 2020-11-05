@@ -46,8 +46,8 @@ class ConversationViewController: UIViewController {
         
         guard let channel = self.channel else { return }
         guard let message = messageTextView.text else { return }
-        let letters = NSCharacterSet.letters
-        let range = message.rangeOfCharacter(from: letters)
+        let visibleSymbols = NSCharacterSet.whitespacesAndNewlines.inverted
+        let range = message.rangeOfCharacter(from: visibleSymbols)
         guard range != nil else { return }
         
         guard let identifier = channel.identifier else { return }
