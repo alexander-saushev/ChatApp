@@ -13,8 +13,7 @@ protocol IServiceAssembly {
   var operationSaveService: IProfileService { get }
   var gcdSaveService: IProfileService { get }
   var firebaseService: IFirebaseService { get }
-  var networkService: INetworkService { get }
-  var imageCacheService: IImageCacheService { get }
+  var loaderImagesService: ILoaderImagesService { get }
 }
 
 class ServiceAssembly: IServiceAssembly {
@@ -27,6 +26,5 @@ class ServiceAssembly: IServiceAssembly {
   lazy var operationSaveService: IProfileService = OperationSaveService(profileStorage: self.coreAssembly.profileStorage)
   lazy var gcdSaveService: IProfileService = GCDSaveService(profileStorage: self.coreAssembly.profileStorage)
   lazy var firebaseService: IFirebaseService = FirebaseService(firebaseStorage: self.coreAssembly.firebaseStorage)
-  lazy var networkService: INetworkService = NetworkService(requestSender: coreAssembly.requestSender)
-  lazy var imageCacheService: IImageCacheService = ImageCacheService()
+  lazy var loaderImagesService: ILoaderImagesService = LoaderImagesService(networkDataFetcher: self.coreAssembly.networkDataFetcher)
 }

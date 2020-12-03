@@ -29,18 +29,13 @@ final class ProfileViewController: UIViewController {
     @IBOutlet weak var scrollView: UIScrollView!
     
     var GCDButtonIsClick = false
-    
     var savingType: ProfileSavingType = .gcd
     
-    var presentationAssembly: IPresentationAssembly?
-    var operationModel: IProfileModel?
-    var model: IProfileModel?
-    
-    var profile: Profile?
+    var presentationAssembly: IPresentationAssembly!
+    var profile: Profile!
+    var model: IProfileModel!
 
     let imagePicker = UIImagePickerController()
-    
-    var oldImage = UIImage()
     
     var isEditMode = false
     
@@ -53,7 +48,8 @@ final class ProfileViewController: UIViewController {
         profile = Profile(userName: nameTextField.text ?? "", userBio: bioTextView.text, userData: avatarImageView.image?.pngData() ?? Data())
         
         self.configure()
-        guard let model = self.model else { return }
+        guard let model = self.model
+        else { return }
         
         model.retriveProfile { [weak self] result in
           guard let self = self
@@ -68,6 +64,12 @@ final class ProfileViewController: UIViewController {
           }
         }
         addKeyboardGesture()
+    }
+    
+    func setupDepenencies(model: IProfileModel?,
+                          presentationAssembly: IPresentationAssembly?) {
+      self.model = model
+      self.presentationAssembly = presentationAssembly
     }
     
     private func configure() {
@@ -89,7 +91,7 @@ final class ProfileViewController: UIViewController {
         
       setTheme()
       initialsLabel.isHidden = true
-      bioTextView.isEditable = false
+      self.bioTextView.isEditable = false
       avatarImageView.layer.cornerRadius = avatarImageView.bounds.width / 2
     }
     
@@ -117,17 +119,17 @@ final class ProfileViewController: UIViewController {
     }
     
     @IBAction func editButtonTapped(_ sender: Any) {
-      if isEditMode {
-        unEnabledUIElements()
-        unEnabledButtons()
-        ButtonAnimation.stopShake(editButton)
-        isEditMode = false
-      } else {
-        enabledUIElements()
-        enabledButtons()
-        ButtonAnimation.shake(editButton)
-        isEditMode = true
-      }
+        if isEditMode {
+          unEnabledUIElements()
+          unEnabledButtons()
+          ButtonAnimation.stopShake(editButton)
+          isEditMode = false
+        } else {
+          enabledUIElements()
+          enabledButtons()
+          ButtonAnimation.shake(editButton)
+          isEditMode = true
+        }
     }
     
     @IBAction func setImageButtonTapped(_ sender: Any) {
@@ -152,11 +154,11 @@ final class ProfileViewController: UIViewController {
             self.imagePicker.sourceType = .photoLibrary
             self.present(self.imagePicker, animated: true, completion: nil)
         }))
-        
+
         alert.addAction(UIAlertAction(title: "Загрузить", style: .default, handler: { (_) in
-            let vc = self.presentationAssembly!.imagePickerViewController()
-            vc.delegate = self
-            self.present(vc, animated: true, completion: nil)
+            guard let galleryVC = self.presentationAssembly?.galleryViewController() else { return }
+            galleryVC.delegate = self
+            self.present(galleryVC, animated: true)
         }))
 
         alert.addAction(UIAlertAction(title: "Отменить", style: .default, handler: nil))
@@ -170,15 +172,13 @@ final class ProfileViewController: UIViewController {
     @IBAction func operationButtonTapped(_ sender: Any) {
         unEnabledButtons()
         activityIndicator.startAnimating()
-        guard let profile = self.profile,
-                  let operationModel = self.operationModel
-            else { return }
-            operationModel.save(profile: profile) { [weak self] result in
+        guard let profile = self.profile
+        else { return }
+        model.save(profile: profile) { [weak self] result in
           guard let self = self else { return }
           switch result {
           case .success:
             self.updateUI()
-            ButtonAnimation.stopShake(self.editButton)
           case .failure:
             print("Не удалось сохранить изменения")
           }
@@ -189,6 +189,7 @@ final class ProfileViewController: UIViewController {
         GCDButtonIsClick = true
         activityIndicator.startAnimating()
         unEnabledButtons()
+        
         guard let profile = self.profile,
               let model = self.model
         else { return }
@@ -197,7 +198,6 @@ final class ProfileViewController: UIViewController {
           switch result {
           case .success:
             self.updateUI()
-            ButtonAnimation.stopShake(self.editButton)
           case .failure:
             print("Не удалось сохранить изменения")
           }
@@ -218,7 +218,7 @@ final class ProfileViewController: UIViewController {
         GCDButton?.backgroundColor = Theme.current.saveButtonColor
         operationButton?.backgroundColor = Theme.current.saveButtonColor
         headerLabel?.textColor = Theme.current.textColor
-        headerView?.backgroundColor = Theme.current.backgroundColor
+        headerView?.backgroundColor = Theme.current.profileHeaderColor
     }
     
     @IBAction func closeButtonAction(_ sender: Any) {
@@ -293,16 +293,17 @@ extension ProfileViewController {
     }
 }
 
-extension ProfileViewController: ImagePickerDelegate {
-    func setImage(image: UIImage?) {
-        oldImage = avatarImageView?.image ?? UIImage()
-        avatarImageView?.image = image
-        if oldImage == avatarImageView?.image {
-            self.profile?.userData = avatarImageView.image?.pngData() ?? Data()
-        } else {
-            self.profile?.userData = avatarImageView.image?.pngData() ?? Data()
-            self.profile?.photoChanged = true
-            enabledButtons()
-        }
-    }
+extension ProfileViewController: GalleryViewControllerDelegate {
+  func updateProfile(_ galleryViewController: GalleryViewController, urlImageData: Data) {
+    avatarImageView.image = UIImage(data: urlImageData)
+    updateProfile()
+  }
+  
+  private func updateProfile() {
+    avatarImageView.contentMode = .scaleAspectFill
+    avatarImageView.clipsToBounds = true
+    self.profile?.userData = avatarImageView.image?.pngData() ?? Data()
+    self.profile?.photoChanged = true
+    enabledButtons()
+  }
 }

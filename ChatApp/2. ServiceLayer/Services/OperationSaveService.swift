@@ -12,6 +12,7 @@ enum FileName: String {
   case userName  = "userName.txt"
   case userBio   = "userBio.txt"
   case userPhoto = "photo.png"
+  case userTheme = "theme.txt"
 }
 
 protocol IProfileService {

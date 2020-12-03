@@ -9,7 +9,7 @@
 import Foundation
 import CoreData
 
-struct MessageCellDisplay: Hashable {
+struct MessageCellDisplayModel: Hashable {
     let senderId: String
     var senderName: String
     var content: String

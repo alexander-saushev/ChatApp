@@ -24,7 +24,7 @@ class ConversationViewController: UIViewController {
     var channel: Channel_db!
     
     var presentationAssembly: IPresentationAssembly?
-    var model: IConversationModel?
+    var model: IConversationModel!
     
     private var fetchedResultsController: NSFetchedResultsController<Message_db>!
     
@@ -44,6 +44,10 @@ class ConversationViewController: UIViewController {
         loadMessages()
         configKeyboard()
     }
+    
+    func setupDepenencies(model: IConversationModel, presentationAssembly: IPresentationAssembly?) {
+        self.model = model
+      }
     
     @IBAction func sendButtonAction(_ sender: Any) {
         
@@ -70,7 +74,7 @@ class ConversationViewController: UIViewController {
        fetchedResultsController = model.fetchedResultController(channel: channel)
        try? self.fetchedResultsController.performFetch()
        self.fetchedResultsController.delegate = self
-        self.scrollToBottom(animated: true)
+       self.scrollToBottom(animated: true)
        
      }
     

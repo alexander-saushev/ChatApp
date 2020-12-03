@@ -17,7 +17,7 @@ protocol IFirebaseService {
   func getChannels(completion: @escaping ([ChannelCellDisplayModel]) -> Void)
   
   func insertMessage(channelId: String, message: String)
-  func getMessages(channel: Channel_db, completion: @escaping ([MessageCellDisplay]) -> Void)
+  func getMessages(channel: Channel_db, completion: @escaping ([MessageCellDisplayModel]) -> Void)
 }
 
 final class FirebaseService: IFirebaseService {
@@ -64,11 +64,11 @@ final class FirebaseService: IFirebaseService {
     firebaseStorage.insertMessage(channelId: channelId, newMessage: newMessage)
   }
   
-    func getMessages(channel: Channel_db, completion: @escaping ([MessageCellDisplay]) -> Void) {
-      var messages = [MessageCellDisplay]()
+    func getMessages(channel: Channel_db, completion: @escaping ([MessageCellDisplayModel]) -> Void) {
+      var messages = [MessageCellDisplayModel]()
       guard let identifier = channel.identifier else { return }
       firebaseStorage.fetchMessage(identifier: identifier) {
-      let message = MessageCellDisplay(senderId: $0.senderId,
+      let message = MessageCellDisplayModel(senderId: $0.senderId,
                                            senderName: $0.senderName,
                                            content: $0.content,
                                            created: Date(timeIntervalSince1970: TimeInterval($0.created.seconds)))

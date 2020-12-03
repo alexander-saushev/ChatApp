@@ -19,8 +19,8 @@ class ConversationsListViewController: UIViewController {
     @IBOutlet weak var profileView: UIView!
     @IBOutlet weak var addChannelBarButtonItem: UIBarButtonItem!
     
-    var presentationAssembly: IPresentationAssembly?
-    var model: IConversationsListModel?
+    private var presentationAssembly: IPresentationAssembly!
+    var model: IConversationsListModel!
 
     @IBAction func settingsButtonAction(_ sender: Any) {
         let themeStoryboard: UIStoryboard = UIStoryboard(name: "ThemesViewController", bundle: nil)
@@ -50,6 +50,11 @@ class ConversationsListViewController: UIViewController {
         profileView?.addGestureRecognizer(openProfileGesture)
         
         loadChannels()
+    }
+    
+    func setupDepenencies(model: IConversationsListModel, presentationAssembly: IPresentationAssembly?) {
+      self.model = model
+      self.presentationAssembly = presentationAssembly
     }
     
     private func loadChannels() {

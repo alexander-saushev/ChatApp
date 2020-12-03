@@ -16,7 +16,7 @@ protocol ICoreDataService {
   func saveChannels(_ channels: [ChannelCellDisplayModel])
   func deleteChannel(_ channelObject: NSManagedObject)
 
-  func saveMessages(_ channel: Channel_db, _ messages: [MessageCellDisplay])
+  func saveMessages(_ channel: Channel_db, _ messages: [MessageCellDisplayModel])
 }
 
 class CoreDataService: ICoreDataService {
@@ -78,7 +78,7 @@ class CoreDataService: ICoreDataService {
       coreDataStorage.performSave(in: coreDataStorage.mainContext)
     }
   
-    func saveMessages(_ channel: Channel_db, _ messages: [MessageCellDisplay]) {
+    func saveMessages(_ channel: Channel_db, _ messages: [MessageCellDisplayModel]) {
     
     coreDataStorage.performSave { context in
 

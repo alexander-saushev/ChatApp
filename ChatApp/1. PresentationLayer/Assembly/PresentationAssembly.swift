@@ -14,7 +14,7 @@ protocol IPresentationAssembly {
   func entryPoint() -> UINavigationController
   func profileViewController() -> ProfileViewController
   func conversationViewController() -> ConversationViewController
-  func imagePickerViewController() -> ImagePickerViewController
+  func galleryViewController() -> GalleryViewController
 }
 
 class PresentationAssembly: IPresentationAssembly {
@@ -27,13 +27,14 @@ class PresentationAssembly: IPresentationAssembly {
   
   // MARK: - ConversationsListViewController
   func entryPoint() -> UINavigationController {
-    let model = conversationsListModel()
     let storyboard = UIStoryboard(name: "ConversationsListViewController", bundle: nil)
     let rootController = storyboard.instantiateViewController(withIdentifier: "navigationController") as? UINavigationController
     
     let conversationsListVC = rootController?.viewControllers.first as? ConversationsListViewController
-    conversationsListVC?.model = model
-    conversationsListVC?.presentationAssembly = self
+    
+    conversationsListVC?.setupDepenencies(model: conversationsListModel(),
+                                          presentationAssembly: self)
+    
     return rootController ?? UINavigationController()
   }
   
@@ -45,12 +46,11 @@ class PresentationAssembly: IPresentationAssembly {
   
   // MARK: - ConversationViewController
   func conversationViewController() -> ConversationViewController {
-    let model = conversationModel()
     
     let conversationStoryboard = UIStoryboard(name: "ConversationViewController", bundle: nil)
     let conversationVC = conversationStoryboard.instantiateViewController(withIdentifier: "ConversationViewController") as? ConversationViewController
-    conversationVC?.model = model
-    conversationVC?.presentationAssembly = self
+    conversationVC?.setupDepenencies(model: conversationModel(),
+                                    presentationAssembly: nil)
     
     return conversationVC!
   }
@@ -66,18 +66,8 @@ class PresentationAssembly: IPresentationAssembly {
     let profileStoryboard = UIStoryboard(name: "ProfileViewController", bundle: nil)
     let profileVC = profileStoryboard.instantiateViewController(withIdentifier: "ProfileViewController") as? ProfileViewController
     
-    switch profileVC?.savingType {
-    case .gcd:
-      let model = profileModel(savingType: .gcd)
-      profileVC?.model = model
-    case .operation:
-      let model = profileModel(savingType: .operation)
-      profileVC?.model = model
-    case .none:
-        print("")
-    }
-    profileVC?.operationModel = profileModel(savingType: .operation)
-    profileVC?.presentationAssembly = self
+    profileVC?.setupDepenencies(model: profileModel(savingType: profileVC!.savingType),
+                               presentationAssembly: self)
     return profileVC!
   }
   
@@ -90,15 +80,15 @@ class PresentationAssembly: IPresentationAssembly {
     }
   }
     
-  // MARK: - ImagePicker
-  func imagePickerViewController() -> ImagePickerViewController {
-      let model = ImagePickerModel(networkService: serviceAssembly.networkService,
-                                   imageCacheService: serviceAssembly.imageCacheService)
-      let ipStoryboard = UIStoryboard(name: "ImagePickerViewController", bundle: nil)
-      let ipVC = ipStoryboard.instantiateViewController(withIdentifier: "ImagePickerViewController") as? ImagePickerViewController
-      ipVC?.presentationAssembly = self
-      ipVC?.model = model
-      model.delegate = ipVC
-      return ipVC!
-  }
+    // MARK: - GalleryViewController
+    func galleryViewController() -> GalleryViewController {
+      let galleryStoryboard = UIStoryboard(name: "GalleryViewController", bundle: nil)
+      let galleryVC = galleryStoryboard.instantiateViewController(withIdentifier: "GalleryViewController") as? GalleryViewController
+      galleryVC?.setupDepenencies(model: galleryModel(), presentationAssembly: nil)
+      return galleryVC!
+    }
+    
+    private func galleryModel() -> IGalleryModel {
+      return GalleryModel(loaderImagesService: self.serviceAssembly.loaderImagesService)
+    }
 }
