@@ -2,10 +2,11 @@
 //  MockNetworkDataFetcher.swift
 //  ChatAppUnitTests
 //
-//  Created by Александр Саушев on 04.12.2020.
+//  Created by Александр Саушев on 03.12.2020.
 //  Copyright © 2020 Александр Саушев. All rights reserved.
 //
 
+@testable import ChatApp
 import Foundation
 
 final class MockNetworkDataFetcher: INetworkDataFetcher {

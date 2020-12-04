@@ -2,7 +2,7 @@
 //  APIResponseModels.swift
 //  ChatApp
 //
-//  Created by Александр Саушев on 04.12.2020.
+//  Created by Александр Саушев on 30.11.2020.
 //  Copyright © 2020 Александр Саушев. All rights reserved.
 //
 
