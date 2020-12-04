@@ -199,10 +199,10 @@
 			isa = PBXGroup;
 			children = (
 				D1601187DF68AE053D3351E1 /* Pods */,
-				DFBEBCBC257A40B000CEAABC /* ChatAppUnitTests */,
 				DF3A3148250F79A200DD7BBC /* Products */,
 				E146F944B68D839B91BCE75B /* Frameworks */,
 				DF3A3149250F79A200DD7BBC /* ChatApp */,
+				DFBEBCBC257A40B000CEAABC /* ChatAppUnitTests */,
 				DFB7844E2579998400ACE3E8 /* ChatAppUITests */,
 			);
 			sourceTree = "<group>";
