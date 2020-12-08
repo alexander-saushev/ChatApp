@@ -9,7 +9,7 @@ lane :build_for_testing do
 end
 
 desc "Run tests"
-lane :run_tests do
+lane :run_ChatApp_tests do
   scan(
     test_without_building: true
   )
@@ -27,5 +27,6 @@ end
 desc "Build, run tests and notify"
 lane :build_and_test do
   build_for_testing
-  run_tests
+  run_ChatApp_tests
+  send_discord_notification
 end
