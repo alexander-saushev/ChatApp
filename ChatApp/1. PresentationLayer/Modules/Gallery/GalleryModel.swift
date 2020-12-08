@@ -9,12 +9,10 @@
 import Foundation
 import UIKit
 
-// MARK: GalleryDisplayModel
 struct GalleryDisplayModel {
   let urlImageData: Data
 }
 
-// MARK: IGalleryModel protocol
 protocol IGalleryModel {
   var cellsCount: Int { get }
   var currentCount: Int { get }
@@ -24,7 +22,6 @@ protocol IGalleryModel {
   func fetchGallery()
 }
 
-// MARK: IGalleryModelDelegate protocol
 protocol IGalleryModelDelegate: class {
   func onFetchCompleted(_ galleryModel: GalleryModel)
   func onFetchFailed(error: Error)
@@ -32,7 +29,6 @@ protocol IGalleryModelDelegate: class {
 
 class GalleryModel: IGalleryModel {
   
-  // MARK: Public properties
   var galleryOfImages = [GalleryDisplayModel]()
   let loaderImagesService: ILoaderImagesService
   weak var delegate: IGalleryModelDelegate?
@@ -45,12 +41,10 @@ class GalleryModel: IGalleryModel {
     50
   }
   
-  // MARK: Initializers
   init(loaderImagesService: ILoaderImagesService) {
     self.loaderImagesService = loaderImagesService
   }
   
-  // MARK: Public Methods
   func fetchGallery() {
     loaderImagesService.loadImages { [weak self] result in
       guard let self = self else { return }
@@ -70,7 +64,6 @@ class GalleryModel: IGalleryModel {
   }
 }
 
-// MARK: Extension Array
 extension Array where Element == Hit {
   func getGallery() -> [GalleryDisplayModel] {
     var data = Data()

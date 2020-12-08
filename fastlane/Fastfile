@@ -1,0 +1,31 @@
+webhook_url = ENV['DISCORD_WEBHOOK_URL']
+
+desc "Build for testing"
+lane :build_for_testing do
+  cocoapods
+  scan(
+    build_for_testing: true
+  )
+end
+
+desc "Run tests"
+lane :run_tests do
+  scan(
+    test_without_building: true
+  )
+end
+
+desc "Send notification to Discord"
+lane :send_discord_notification do
+  discord_notifier(
+    webhook_url: webhook_url,
+    title: "ChatApp",
+    description: "Success"
+  )
+end
+
+desc "Build, run tests and notify"
+lane :build_and_test do
+  build_for_testing
+  run_tests
+end

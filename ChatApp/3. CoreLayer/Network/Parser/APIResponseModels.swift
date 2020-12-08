@@ -13,7 +13,6 @@ struct Empty: Codable {
   let hits: [Hit]
 }
 
-// MARK: - Hit
 public struct Hit: Codable, Equatable {
   let previewURL: String
 }
