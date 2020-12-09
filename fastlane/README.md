@@ -29,7 +29,7 @@ Run tests
 ```
 fastlane discord_notification
 ```
-Send notification to Discord
+Send notification to discord
 ### build_and_test
 ```
 fastlane build_and_test

@@ -1,5 +1,3 @@
-webhook_url = ENV['DISCORD_WEBHOOK_URL']
-
 desc "Build for testing"
 lane :build_for_testing do
   cocoapods
@@ -15,19 +13,19 @@ lane :run_ChatApp_tests do
   )
 end
 
-desc "Send notification to Discord"
+desc "Send notification to discord"
 lane :discord_notification do
-  client = Discordrb::Webhooks::Client.new(url: webhook_url)
-  client.execute do |builder|
-    builder.add_embed do |embed|
-      embed.title = "ChatApp"
-      embed.colour = 0x4BB543
-      embed.description = "Success"
-      embed.author = Discordrb::Webhooks::EmbedAuthor.new(
-        name: "Alexander Saushev")
-      embed.timestamp = Time.now
-    end
-  end
+  discord_notifier(
+    webhook_url: ENV['DISCORD_WEBHOOK_URL'],
+    title: "ChatApp",
+    description: "Success build and testing",
+    fields:[
+        {
+          name:"Created by:", 
+          value:"Alexander Saushev"
+        }
+      ]
+  )
 end
 
 desc "Build, run tests and notify"

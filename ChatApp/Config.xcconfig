@@ -1,0 +1,12 @@
+//
+//  Config.xcconfig
+//  ChatApp
+//
+//  Created by Александр Саушев on 09.12.2020.
+//  Copyright © 2020 Александр Саушев. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+API_HOST = pixabay.com
+API_KEY = 19168219-250301f0b178fcfe3f1b565a2

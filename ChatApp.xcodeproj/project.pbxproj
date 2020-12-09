@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1586882C24630146D0C359AE /* Pods_ChatAppUnitTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 529668028223999597B9B546 /* Pods_ChatAppUnitTests.framework */; };
 		34CF34F7C66C46EAADA2DCFA /* Pods_ChatApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7891BE982C39CAF1AE68F1D2 /* Pods_ChatApp.framework */; };
+		DF00E67425814CDB00A5A32E /* GalleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF00E67325814CDB00A5A32E /* GalleryModel.swift */; };
 		DF342F14253FA6060093F482 /* Channel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF342F13253FA6060093F482 /* Channel.swift */; };
 		DF342F1B253FB1940093F482 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF342F1A253FB1940093F482 /* Message.swift */; };
 		DF3A314B250F79A200DD7BBC /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF3A314A250F79A200DD7BBC /* AppDelegate.swift */; };
@@ -30,7 +31,6 @@
 		DF87C98A2536E0C600E5B538 /* ProfileModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C9892536E0C600E5B538 /* ProfileModel.swift */; };
 		DF87C98D2536E11C00E5B538 /* GCDSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C98C2536E11C00E5B538 /* GCDSaveService.swift */; };
 		DF87C9902536E14600E5B538 /* OperationSaveService.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF87C98F2536E14600E5B538 /* OperationSaveService.swift */; };
-		DFA19E942579463B00FB67D4 /* GalleryModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA19E932579463B00FB67D4 /* GalleryModel.swift */; };
 		DFA19E982579466100FB67D4 /* GalleryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA19E972579466100FB67D4 /* GalleryViewController.swift */; };
 		DFA19E9C2579467D00FB67D4 /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA19E9B2579467D00FB67D4 /* ImageCollectionViewCell.swift */; };
 		DFA19E9F2579468D00FB67D4 /* UICollectionViewDelegateFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = DFA19E9E2579468D00FB67D4 /* UICollectionViewDelegateFlowLayout.swift */; };
@@ -91,6 +91,8 @@
 		42C476C5B4C193A52F149874 /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		529668028223999597B9B546 /* Pods_ChatAppUnitTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatAppUnitTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7891BE982C39CAF1AE68F1D2 /* Pods_ChatApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ChatApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DF00E663258146C200A5A32E /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Config.xcconfig; path = ChatApp/Config.xcconfig; sourceTree = SOURCE_ROOT; };
+		DF00E67325814CDB00A5A32E /* GalleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryModel.swift; sourceTree = "<group>"; };
 		DF342F13253FA6060093F482 /* Channel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Channel.swift; sourceTree = "<group>"; };
 		DF342F1A253FB1940093F482 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		DF3A3147250F79A200DD7BBC /* ChatApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChatApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -113,7 +115,6 @@
 		DF87C9892536E0C600E5B538 /* ProfileModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileModel.swift; sourceTree = "<group>"; };
 		DF87C98C2536E11C00E5B538 /* GCDSaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GCDSaveService.swift; sourceTree = "<group>"; };
 		DF87C98F2536E14600E5B538 /* OperationSaveService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OperationSaveService.swift; sourceTree = "<group>"; };
-		DFA19E932579463B00FB67D4 /* GalleryModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryModel.swift; sourceTree = "<group>"; };
 		DFA19E972579466100FB67D4 /* GalleryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryViewController.swift; sourceTree = "<group>"; };
 		DFA19E9B2579467D00FB67D4 /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
 		DFA19E9E2579468D00FB67D4 /* UICollectionViewDelegateFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionViewDelegateFlowLayout.swift; sourceTree = "<group>"; };
@@ -226,6 +227,7 @@
 				DF3A314A250F79A200DD7BBC /* AppDelegate.swift */,
 				DFD84E13252A63E400491B1C /* Protocols.swift */,
 				DF4AC2D3255D763B00B457D9 /* RootAssembly.swift */,
+				DF00E663258146C200A5A32E /* Config.xcconfig */,
 				DF4AC2DC255D7A4600B457D9 /* Supporting Files */,
 			);
 			path = ChatApp;
@@ -279,7 +281,7 @@
 				DFAA8C9F2528DB0D006ACD8B /* Conversations List */,
 				DFAA8CB025291116006ACD8B /* Conversation */,
 				DFA54421252DB5F500BFA8CF /* Themes */,
-				DFA19E912579427800FB67D4 /* Gallery */,
+				DFA19E912579427800FB67D4 /* ImagePicker */,
 				DFD6F335257979B000D5E157 /* Animations */,
 			);
 			path = Modules;
@@ -365,14 +367,14 @@
 			path = "Outgoing cell";
 			sourceTree = "<group>";
 		};
-		DFA19E912579427800FB67D4 /* Gallery */ = {
+		DFA19E912579427800FB67D4 /* ImagePicker */ = {
 			isa = PBXGroup;
 			children = (
-				DFA19E932579463B00FB67D4 /* GalleryModel.swift */,
+				DF00E67325814CDB00A5A32E /* GalleryModel.swift */,
 				DFA19E962579464400FB67D4 /* View */,
 				DFA19E972579466100FB67D4 /* GalleryViewController.swift */,
 			);
-			path = Gallery;
+			path = ImagePicker;
 			sourceTree = "<group>";
 		};
 		DFA19E962579464400FB67D4 /* View */ = {
@@ -785,7 +787,6 @@
 				DFAA8CBC25291701006ACD8B /* IncommingMessageCell.swift in Sources */,
 				DFFB868D25496BD2000BFA84 /* Chat.xcdatamodeld in Sources */,
 				DFA5442F252DD21000BFA8CF /* ThemeModel.swift in Sources */,
-				DFA19E942579463B00FB67D4 /* GalleryModel.swift in Sources */,
 				DFD6F337257979BF00D5E157 /* Animations.swift in Sources */,
 				DF7034A32549A64900A79538 /* FirebaseService.swift in Sources */,
 				DFD84E14252A63E400491B1C /* Protocols.swift in Sources */,
@@ -799,6 +800,7 @@
 				DFA19EC425794B5400FB67D4 /* NetworkDataFetcher.swift in Sources */,
 				DFA54423252DB61F00BFA8CF /* ThemesViewController.swift in Sources */,
 				DF87C9902536E14600E5B538 /* OperationSaveService.swift in Sources */,
+				DF00E67425814CDB00A5A32E /* GalleryModel.swift in Sources */,
 				DF342F1B253FB1940093F482 /* Message.swift in Sources */,
 				DFA5442C252DD1E800BFA8CF /* Theme.swift in Sources */,
 				DFA19E9F2579468D00FB67D4 /* UICollectionViewDelegateFlowLayout.swift in Sources */,
@@ -866,6 +868,7 @@
 /* Begin XCBuildConfiguration section */
 		DF3A3159250F79A500DD7BBC /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF00E663258146C200A5A32E /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -928,6 +931,7 @@
 		};
 		DF3A315A250F79A500DD7BBC /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = DF00E663258146C200A5A32E /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

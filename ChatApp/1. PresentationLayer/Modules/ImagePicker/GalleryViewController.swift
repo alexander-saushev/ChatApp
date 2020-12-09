@@ -74,7 +74,6 @@ extension GalleryViewController: UICollectionViewDataSource, UICollectionViewDel
   }
   
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    print(indexPath.item)
     let urlImage = model.galleryOfImages[indexPath.item].urlImageData
 
     delegate?.updateProfile(self, urlImageData: urlImage)
